@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your StockyLift unlock code</title>
+  <meta name="robots" content="noindex" />
+  <style>
+    @font-face { font-family: "General Sans"; src: url("fonts/general-sans-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "General Sans"; src: url("fonts/general-sans-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: "General Sans"; src: url("fonts/general-sans-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+
+    :root {
+      --bg: #fafaf9;
+      --surface: #ffffff;
+      --hairline: #e7e5e4;
+      --text: #1c1917;
+      --muted: #57534e;
+      --accent: #059669;
+      --accent-ink: #047857;
+      --accent-hover: #065f46;
+      --accent-tint: #ecfdf5;
+      --on-accent: #ffffff;
+      --font: "General Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --r-int: 8px;
+      --r-card: 12px;
+      --ease: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+      --maxw: 620px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0c0a09;
+        --surface: #1c1917;
+        --hairline: #292524;
+        --text: #fafaf9;
+        --muted: #a8a29e;
+        --accent: #34d399;
+        --accent-ink: #34d399;
+        --accent-hover: #6ee7b7;
+        --accent-tint: #064e3b22;
+        --on-accent: #0c0a09;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      font: 400 1rem/1.6 var(--font);
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 56px 20px 64px; text-align: center; }
+    a { color: var(--accent-ink); }
+    a:hover { color: var(--accent-hover); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+    h1 { font: 600 clamp(1.625rem, 5vw, 2rem)/1.15 var(--font); letter-spacing: -0.02em; margin: 0 0 10px; }
+    .sub { color: var(--muted); margin: 0 auto 28px; max-width: 48ch; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-card);
+      padding: 28px 24px;
+      text-align: left;
+    }
+
+    .btn {
+      display: inline-block;
+      font: 500 1rem/1 var(--font);
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: var(--r-int);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background var(--ease), transform var(--ease);
+    }
+    .btn-primary { background: var(--accent-ink); color: var(--on-accent); }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0) scale(0.99); }
+
+    /* --- Code display (receipt moment: accent-tint surface, large mono) --- */
+    .code-box {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+      background: var(--accent-tint);
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-int);
+      padding: 18px 20px;
+      margin: 4px 0 8px;
+    }
+    .code {
+      flex: 1 1 auto;
+      font: 600 clamp(1.375rem, 6vw, 1.875rem)/1.2 var(--mono);
+      letter-spacing: 0.04em;
+      color: var(--accent-ink);
+      word-break: break-all;
+      user-select: all;
+    }
+    .copied { color: var(--accent-ink); font-weight: 500; font-size: 0.875rem; min-height: 20px; margin: 0 0 22px; }
+
+    /* --- Steps --- */
+    .steps { list-style: none; counter-reset: s; margin: 0; padding: 0; }
+    .steps li {
+      counter-increment: s;
+      position: relative;
+      padding: 8px 0 8px 40px;
+      color: var(--muted);
+    }
+    .steps li strong { color: var(--text); font-weight: 600; }
+    .steps li::before {
+      content: counter(s);
+      position: absolute; left: 0; top: 6px;
+      width: 26px; height: 26px; border-radius: var(--r-int);
+      background: var(--accent-tint); color: var(--accent-ink);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 500; font-size: 0.875rem;
+    }
+
+    /* --- States --- */
+    .msg { margin: 0 0 12px; }
+    .spinner {
+      width: 28px; height: 28px; margin: 6px auto 16px;
+      border: 3px solid var(--hairline); border-top-color: var(--accent-ink);
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .notice { color: var(--text); }
+    .hidden { display: none; }
+    .foot { margin-top: 26px; font-size: 0.8125rem; color: var(--muted); }
+    .foot a { color: var(--muted); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spinner { animation-duration: 1.6s; }
+      .btn { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Static page: fulfilment is via Gumroad + email, there is no code-generating backend. -->
+    <div id="success">
+      <h1>You're in. Your unlock code is on its way.</h1>
+      <p class="sub">Thanks for buying StockyLift. Your unlock code is sent <strong>by email to the
+      address you used at checkout</strong> — usually within a few hours, always within a day.</p>
+      <div class="card">
+        <ol class="steps">
+          <li>Watch your inbox (and spam folder) for a code that looks like <strong>SL-XXXXX-XXXXX</strong>.</li>
+          <li>Open the <strong>StockyLift extension popup</strong> in Chrome.</li>
+          <li>Paste the code into the <strong>unlock code</strong> box and click <strong>Unlock</strong>.</li>
+          <li>Done. Every export is unlocked and stays unlocked on this browser.</li>
+        </ol>
+      </div>
+      <p class="foot">Nothing after a day? Reply to your Gumroad receipt email or write to
+        <a href="mailto:stockylift@pm.me">stockylift@pm.me</a> and we'll sort you out fast.</p>
+    </div>
+  </div>
+</body>
+</html>

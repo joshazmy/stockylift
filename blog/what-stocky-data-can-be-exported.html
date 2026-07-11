@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>What Stocky Data Can Be Exported (Before the Shutdown) · StockyLift</title>
+  <meta name="description" content="What Stocky data can be exported before the shutdown? Products live in Shopify already, POs export as CSV, but suppliers cannot be exported natively. The full breakdown and the fixes." />
+  <link rel="canonical" href="https://joshazmy.github.io/stockylift/blog/what-stocky-data-can-be-exported.html" />
+  <meta property="og:title" content="What Stocky Data Can and Cannot Be Exported" />
+  <meta property="og:description" content="Products and inventory are safe in Shopify. POs and stocktakes export as CSV. Suppliers cannot be exported natively. The definitive Stocky data export reference." />
+  <meta property="og:type" content="article" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232742e8'/%3E%3Ctext x='32' y='43' font-family='monospace' font-size='34' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
+  <style>
+    @font-face { font-family: "Satoshi"; src: url("../fonts/satoshi-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Satoshi"; src: url("../fonts/satoshi-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Satoshi"; src: url("../fonts/satoshi-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Satoshi"; src: url("../fonts/satoshi-900.woff2") format("woff2"); font-weight: 900; font-style: normal; font-display: swap; }
+
+    :root {
+      --bg: #fafbfc; --surface: #ffffff; --hairline: #e4e7eb;
+      --ink: #16181d; --muted: #4b5158;
+      --accent: #2742e8; --accent-ink: #1e34c4; --accent-text: #2742e8; --accent-tint: #eef1fe; --on-accent: #ffffff;
+      --danger: #dc2626; --danger-ink: #b91c1c; --danger-tint: #fdecec; --danger-line: #f6cccc;
+      --font: "Satoshi", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      --r-int: 10px; --r-card: 14px; --r-chip: 6px;
+      --ease: cubic-bezier(0.23, 1, 0.32, 1);
+      --shadow: 0 24px 60px rgba(22, 24, 29, 0.10), 0 0 0 1px var(--hairline);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #101114; --surface: #17181c; --hairline: #2a2c32;
+        --ink: #e9eaee; --muted: #a6abb5;
+        --accent: #2742e8; --accent-ink: #4a61f0; --accent-text: #7d8cff; --accent-tint: #1b2040;
+        --danger: #f26d6d; --danger-ink: #f79b9b; --danger-tint: #2a1616; --danger-line: #4a2222;
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--hairline);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body { margin: 0; font: 400 1rem/1.7 var(--font); color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent-text); text-decoration: none; }
+    a:hover { color: var(--accent-ink); }
+    :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; border-radius: var(--r-chip); }
+    .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+    nav {
+      position: sticky; top: 0; z-index: 10; height: 64px;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(8px); border-bottom: 1px solid var(--hairline);
+    }
+    .nav-in { max-width: 760px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .wordmark { display: inline-flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.0625rem; letter-spacing: -0.01em; color: var(--ink); }
+    .wordmark:hover { color: var(--ink); }
+    .wordmark .mark { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; font: 700 0.8125rem/1 var(--mono); color: var(--on-accent); background: var(--accent); }
+    .btn { display: inline-block; font: 700 0.9375rem/1 var(--font); text-decoration: none; padding: 10px 18px; border-radius: var(--r-int); border: 1px solid transparent; cursor: pointer; white-space: nowrap; transition: background 180ms var(--ease), color 180ms var(--ease); }
+    .btn-primary { background: var(--accent); color: var(--on-accent); }
+    .btn-primary:hover { background: var(--accent-ink); color: var(--on-accent); }
+
+    .article { max-width: 760px; margin: 0 auto; padding: 24px 24px 40px; }
+    .crumbs { font-size: 0.875rem; color: var(--muted); margin: 12px 0 28px; }
+    .crumbs a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    .crumbs a:hover { color: var(--accent-text); }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px; margin: 0 0 18px;
+      padding: 8px 13px; background: var(--danger-tint); border: 1px solid var(--danger-line);
+      border-radius: var(--r-int); font: 500 0.8125rem/1.35 var(--font); color: var(--danger-ink);
+    }
+    .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); flex: 0 0 auto; }
+    h1 { margin: 0 0 24px; font-weight: 900; font-size: clamp(2rem, 4.4vw, 3rem); line-height: 1.06; letter-spacing: -0.025em; }
+    h2 { margin: 52px 0 14px; font-weight: 900; font-size: clamp(1.4rem, 2.6vw, 1.875rem); line-height: 1.15; letter-spacing: -0.02em; }
+    h3 { margin: 32px 0 8px; font: 700 1.125rem/1.35 var(--font); letter-spacing: -0.01em; }
+    p { margin: 0 0 18px; color: var(--ink); }
+    .lede { font-size: 1.1875rem; line-height: 1.6; color: var(--muted); margin-bottom: 8px; }
+    ul, ol { margin: 0 0 18px; padding-left: 24px; }
+    li { margin: 8px 0; }
+    strong { font-weight: 700; }
+    code { font: 500 0.875rem/1.4 var(--mono); background: var(--accent-tint); color: var(--accent-text); padding: 2px 6px; border-radius: var(--r-chip); }
+    pre { margin: 0 0 20px; padding: 16px 18px; background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-card); overflow-x: auto; }
+    pre code { background: none; color: var(--ink); padding: 0; font-size: 0.9375rem; }
+    table { width: 100%; border-collapse: collapse; margin: 0 0 22px; font-size: 0.9375rem; display: block; overflow-x: auto; }
+    th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--hairline); vertical-align: top; }
+    th { font-weight: 700; color: var(--ink); background: var(--surface); }
+    td { color: var(--muted); }
+    hr { border: 0; border-top: 1px solid var(--hairline); margin: 40px 0; }
+
+    .note { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-card); padding: 18px 20px; margin: 0 0 22px; }
+    .note p { margin: 0; color: var(--muted); font-size: 0.9375rem; }
+    .related { margin: 44px 0 0; padding: 22px 24px; background: var(--accent-tint); border-radius: var(--r-card); }
+    .related b { display: block; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+    .related ul { margin: 0; padding-left: 20px; }
+    .related li { margin: 6px 0; }
+    .cta {
+      margin: 44px 0 0; padding: 32px; background: var(--surface);
+      border: 1px solid var(--hairline); border-radius: var(--r-card); box-shadow: var(--shadow); text-align: center;
+    }
+    .cta h2 { margin: 0 0 10px; }
+    .cta p { color: var(--muted); max-width: 46ch; margin: 0 auto 22px; }
+    .cta .btn { padding: 14px 26px; font-size: 1rem; }
+    .disclosure { font-size: 0.8125rem; color: var(--muted); font-style: italic; }
+
+    footer {
+      color: var(--muted); font-size: 0.8125rem; padding: 40px 24px 56px;
+      border-top: 1px solid var(--hairline); text-align: center; margin-top: 56px;
+    }
+    footer p { margin: 6px 0; }
+    footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    footer a:hover { color: var(--accent-text); }
+
+    @media (max-width: 560px) { .cta { padding: 24px; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-in">
+      <a class="wordmark" href="../index.html"><span class="mark">S</span>StockyLift</a>
+      <a class="btn btn-primary" href="../index.html">Get StockyLift</a>
+    </div>
+  </nav>
+
+  <main class="article">
+    <p class="crumbs"><a href="../index.html">StockyLift</a> › <a href="index.html">Blog</a> › What Stocky data can be exported</p>
+
+    <p class="eyebrow"><span class="dot"></span>Every Stocky API endpoint goes dark Aug 31, 2026</p>
+    <h1>What Stocky data can and cannot be exported</h1>
+
+    <p class="lede">Shopify is killing Stocky. The app was delisted February 2, 2026. It stops working entirely on August 31, 2026. On that date, every Stocky API endpoint goes dark.</p>
+    <p>If you run inventory through Stocky, you need to know exactly what data you can get out and what you cannot. This article is the definitive reference. Every claim about Stocky's export capabilities traces to <a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify's official transition document</a>.</p>
+
+    <h2>Stocky shutdown timeline</h2>
+    <table>
+      <thead><tr><th>Date</th><th>What happens</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">Feb 2, 2026</td><td>Stocky delisted from the Shopify App Store. New installs blocked.</td></tr>
+        <tr><td class="mono">Aug 31, 2026</td><td>Stocky stops working. APIs return nothing. App is non-operational.</td></tr>
+        <tr><td class="mono">~Nov 30, 2026</td><td>Read-only export access ends. Shopify guarantees at least 90 days.</td></tr>
+      </tbody>
+    </table>
+    <p>Shopify says merchants retain read-only access to Stocky for at least 90 days after August 31. That means your data does not vanish at midnight. But the app stops being operational the moment APIs die. You can view. You cannot act.</p>
+
+    <h2>What can and cannot be exported</h2>
+    <table>
+      <thead><tr><th>Data type</th><th>Location</th><th>Exportable from Stocky?</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Products</td><td>Shopify admin</td><td>Yes (already in Shopify)</td><td>Stocky reads from Shopify. Products are not "in" Stocky. Safe.</td></tr>
+        <tr><td>Inventory levels</td><td>Shopify admin</td><td>Yes (already in Shopify)</td><td>Live counts sync to Shopify. No migration needed.</td></tr>
+        <tr><td>Purchase orders (open)</td><td>Stocky UI</td><td>CSV export from Stocky</td><td>Export before Aug 31. CSV does not carry PO status or received quantities into Shopify.</td></tr>
+        <tr><td>Purchase orders (historical)</td><td>Stocky UI</td><td>CSV export from Stocky</td><td>Shopify cannot import historical POs. CSV is a flat record only.</td></tr>
+        <tr><td>Stocktakes</td><td>Stocky UI</td><td>CSV export from Stocky</td><td>Export as archival data. No import path into Shopify exists.</td></tr>
+        <tr><td>Suppliers</td><td>Stocky only</td><td><strong>No.</strong></td><td>No export button exists in Stocky. Shopify confirms this.</td></tr>
+        <tr><td>Supplier-to-product links</td><td>Stocky only</td><td><strong>No.</strong></td><td>Tied to supplier records. Lost if not extracted.</td></tr>
+      </tbody>
+    </table>
+    <p>Source for supplier and PO limitations: <a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify transition doc</a>.</p>
+
+    <h2>The supplier problem</h2>
+    <p>This is the critical gap. Suppliers live inside Stocky with no native export path. Shopify's own documentation states there is no button to export your supplier list. When Stocky's APIs die on August 31, 2026, your supplier data becomes trapped in a read-only app that can no longer integrate with anything.</p>
+    <p>Suppliers include names, emails, phone numbers, addresses, lead times, and the product-to-supplier mappings you built over years. None of that carries into Shopify natively. The Shopify CSV upload for products cannot retain supplier links or PO history.</p>
+    <p>If you do nothing, you lose operational access to your supplier network on August 31 and read-only access roughly 90 days later.</p>
+
+    <h2>How to get your suppliers out</h2>
+    <p>There is one reliable path. Stocky exposes a read-only API endpoint that returns supplier data as structured JSON:</p>
+    <pre><code>GET /api/v2/suppliers.json</code></pre>
+    <p>This endpoint works now. It dies on August 31, 2026 with the rest of the Stocky API.</p>
+    <p>You can write your own script to hit this endpoint using your Stocky API key. Or you can use a tool that does it for you. For a step-by-step walkthrough of both routes, see <a href="export-stocky-suppliers.html">how to export suppliers from Stocky</a>.</p>
+    <p class="disclosure"><strong>Disclosure:</strong> I built StockyLift, an unofficial Chrome extension that is not affiliated with Shopify. It fetches your supplier list via the Stocky API endpoint above, entirely inside your browser. Your API key never leaves your machine. No servers. No data collection.</p>
+    <p>StockyLift exports:</p>
+    <ul>
+      <li>Generic CSV (guaranteed format)</li>
+      <li>JSON</li>
+      <li>Prediko preset (BETA)</li>
+      <li>Inventory Planner preset (BETA)</li>
+      <li>Genie preset (BETA)</li>
+    </ul>
+    <p>The BETA presets are not yet byte-verified against those apps' real import templates. Generic CSV is the reliable path. Most inventory tools accept generic CSV.</p>
+    <p>Free preview shows your supplier count and the first three rows before you pay anything. If StockyLift cannot export your suppliers cleanly, you get a full refund.</p>
+    <p>Pricing: $39 through launch, $59 from August 10. Done-for-you concierge service: $149.</p>
+
+    <h2>Act before August 31</h2>
+    <p>The API deadline is hard. After August 31, 2026, no tool can fetch your suppliers programmatically. The 90-day read-only window means you can still see your data, but you cannot pull it via API. Manual transcription of hundreds of suppliers is not realistic.</p>
+    <p>Export your POs and stocktakes from the Stocky UI now. Get your suppliers out before the API dies. Your products and inventory levels are already safe in Shopify.</p>
+
+    <h2>FAQ</h2>
+    <h3>Can I export suppliers from Stocky?</h3>
+    <p>No. Shopify's official transition document confirms there is no export button for suppliers in Stocky. You must use the Stocky API (<code>GET /api/v2/suppliers.json</code>) before August 31, 2026, or use a tool like StockyLift that calls that endpoint for you.</p>
+    <h3>Will my products and inventory levels be affected by the Stocky shutdown?</h3>
+    <p>No. Products and inventory counts live in Shopify, not in Stocky. Stocky reads from Shopify. When Stocky shuts down, your products and live inventory remain untouched in your Shopify admin.</p>
+    <h3>Can I import my historical purchase orders into Shopify?</h3>
+    <p>No. Shopify's transition document states historical purchase orders cannot be imported into Shopify. You can export POs as CSV from the Stocky UI for archival purposes, but Shopify has no import path for them. The CSV also cannot carry PO statuses, received quantities, or supplier links.</p>
+    <h3>How long do I have after August 31, 2026?</h3>
+    <p>Stocky stops being an operational app on August 31, 2026. APIs die that day. Shopify says read-only export access continues for at least 90 days after. That gives you until roughly the end of November 2026 to view your data. But you cannot use the API during that window. Extract everything before August 31.</p>
+
+    <div class="related">
+      <b>Keep reading</b>
+      <ul>
+        <li><a href="export-stocky-suppliers.html">How to export suppliers from Stocky</a> — the exact API route and the two-minute packaged option.</li>
+        <li><a href="stocky-shutting-down-what-to-do.html">Stocky is shutting down: what to do before August 31, 2026</a> — the complete migration checklist.</li>
+      </ul>
+    </div>
+
+    <div class="cta">
+      <h2>Suppliers are the one thing you can't export natively</h2>
+      <p>StockyLift pulls your full supplier list through Stocky's own API, entirely in your browser, and writes it to clean CSV and JSON. Full refund if it can't export cleanly.</p>
+      <a class="btn btn-primary" href="../index.html">See how StockyLift works</a>
+    </div>
+
+    <hr />
+    <p class="disclosure">Author: I am the maker of StockyLift, an unofficial Chrome extension not affiliated with Shopify. StockyLift exists because Shopify never built an export button for suppliers. This article cites Shopify's <a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">official transition documentation</a> for all factual claims about Stocky's capabilities and limitations.</p>
+  </main>
+
+  <footer>
+    <p>StockyLift is an independent tool and is not affiliated with or endorsed by Shopify or Stocky.</p>
+    <p><a href="../index.html">StockyLift</a> · <a href="index.html">Blog</a> · <a href="../privacy.html">Privacy</a></p>
+  </footer>
+</body>
+</html>

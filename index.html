@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Export Suppliers from Stocky Before Aug 31 · StockyLift</title>
+  <meta name="description" content="Stocky is shutting down Aug 31, 2026 and has no supplier export button. StockyLift is a Chrome extension that exports your full Stocky supplier list to CSV for Prediko, Inventory Planner, Genie, or a generic import. Runs 100% in your browser." />
+  <meta property="og:title" content="Export Suppliers from Stocky Before Aug 31 · StockyLift" />
+  <meta property="og:description" content="Stocky shuts down Aug 31, 2026 and has no supplier export button. StockyLift adds one. Your full list, out to CSV, in two minutes." />
+  <meta property="og:type" content="website" />
+  <!-- Card source: og-card.html (re-screenshot at 1200x630 if the theme changes).
+       TODO: swap the domain below for the real one at deploy time. -->
+  <meta property="og:image" content="https://joshazmy.github.io/stockylift/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="StockyLift — Stocky is closing. Your suppliers leave with you. Full supplier list to clean CSV in about two minutes." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Export Suppliers from Stocky Before Aug 31 · StockyLift" />
+  <meta name="twitter:description" content="Stocky shuts down Aug 31, 2026 and has no supplier export button. StockyLift adds one. Your full list, out to CSV, in two minutes." />
+  <meta name="twitter:image" content="https://joshazmy.github.io/stockylift/og.png" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232742e8'/%3E%3Ctext x='32' y='43' font-family='monospace' font-size='34' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
+
+  <!-- FAQPage structured data, kept in sync with the visible FAQ below. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Shopify says suppliers must be recreated manually. Is StockyLift legit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Shopify's docs say to recreate suppliers by hand because there's no export button in the Stocky UI. But Stocky still exposes your suppliers through its own documented API. StockyLift simply calls that API with your own key and writes the result to a CSV. Nothing is scraped and nothing is reverse-engineered."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this allowed?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. It's your own data, pulled through Stocky's own documented API using your own API key. The request goes straight from your browser to Stocky, authenticated as you. StockyLift never touches your key or your data."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens after August 31, 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Once Stocky shuts down its API goes away, so export while it's still live. The files StockyLift produces are yours forever: import them into your new inventory app whenever you're ready, or just keep them as a backup. Export now even if you haven't picked a replacement yet."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where do the exported files go?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Straight to your browser's Downloads folder, like any other download. They are plain CSV and JSON files on your own disk, so you can keep them, move them, or import them into a new app whenever you're ready."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which apps do the presets support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Generic CSV (every Stocky field) and the raw JSON backup are guaranteed. The Prediko, Inventory Planner, and Genie presets are in beta, verified against each app's published import docs, with final templates being confirmed. Verify a preset against a real template before a large import, or just use the Generic CSV, which always holds all your data."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where do I find my Stocky API key?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "In Stocky, open Preferences, then the API section. Copy the API key shown there and paste it into StockyLift along with your myshopify.com store name."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you see my supplier data or my API key?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. There are no servers and no account. Everything runs inside your browser. Your key and supplier data never leave your machine except for the one authenticated request your browser makes to Stocky."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    /* ===== Fonts (self-hosted Satoshi, Fontshare) ===== */
+    @font-face { font-family: "Satoshi"; src: url("fonts/satoshi-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Satoshi"; src: url("fonts/satoshi-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Satoshi"; src: url("fonts/satoshi-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Satoshi"; src: url("fonts/satoshi-900.woff2") format("woff2"); font-weight: 900; font-style: normal; font-display: swap; }
+
+    /* ===== Tokens (DESIGN.md is the authority) =====
+       Radius system: interactive 10px · cards 14px · chips 6px. One accent: cobalt. */
+    :root {
+      --bg: #fafbfc;
+      --surface: #ffffff;
+      --hairline: #e4e7eb;
+      --ink: #16181d;
+      --muted: #4b5158;
+      --accent: #2742e8;
+      --accent-ink: #1e34c4;
+      --accent-text: #2742e8;
+      --accent-tint: #eef1fe;
+      --on-accent: #ffffff;
+      --danger: #dc2626;
+      --danger-ink: #b91c1c;
+      --danger-tint: #fdecec;
+      --danger-line: #f6cccc;
+      --ok: #157a4a;
+      --font: "Satoshi", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      --r-int: 10px;
+      --r-card: 14px;
+      --r-chip: 6px;
+      --ease: cubic-bezier(0.23, 1, 0.32, 1);
+      --shadow: 0 24px 60px rgba(22, 24, 29, 0.10), 0 0 0 1px var(--hairline);
+      --maxw: 1120px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #101114;
+        --surface: #17181c;
+        --hairline: #2a2c32;
+        --ink: #e9eaee;
+        --muted: #a6abb5;
+        --accent: #2742e8;
+        --accent-ink: #4a61f0;
+        --accent-text: #7d8cff;
+        --accent-tint: #1b2040;
+        --on-accent: #ffffff;
+        --danger: #f26d6d;
+        --danger-ink: #f79b9b;
+        --danger-tint: #2a1616;
+        --danger-line: #4a2222;
+        --ok: #4ec98a;
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--hairline);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    [id] { scroll-margin-top: 84px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body {
+      margin: 0;
+      font: 400 1rem/1.6 var(--font);
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+    a { color: var(--accent-text); text-decoration: none; }
+    a:hover { color: var(--accent-ink); }
+    :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; border-radius: var(--r-chip); }
+    .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+    /* ===== Buttons ===== */
+    .btn {
+      display: inline-block;
+      font: 700 1rem/1 var(--font);
+      letter-spacing: 0.005em;
+      text-decoration: none;
+      padding: 14px 24px;
+      border-radius: var(--r-int);
+      border: 1px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 180ms var(--ease), border-color 180ms var(--ease), transform 120ms var(--ease), color 180ms var(--ease);
+    }
+    .btn-primary { background: var(--accent); color: var(--on-accent); }
+    .btn-primary:hover { background: var(--accent-ink); color: var(--on-accent); }
+    .btn-primary:active { transform: translateY(1px); }
+    .btn-ghost { background: transparent; color: var(--ink); border-color: var(--hairline); }
+    .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+    .btn-ghost:active { transform: translateY(1px); }
+
+    /* ===== Nav ===== */
+    nav {
+      position: sticky; top: 0; z-index: 10;
+      height: 64px;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .nav-in { height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .wordmark {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-weight: 900; font-size: 1.0625rem; letter-spacing: -0.01em; color: var(--ink);
+    }
+    .wordmark:hover { color: var(--ink); }
+    .wordmark .mark {
+      width: 26px; height: 26px; border-radius: 7px;
+      display: grid; place-items: center;
+      font: 700 0.8125rem/1 var(--mono);
+      color: var(--on-accent); background: var(--accent);
+    }
+    nav .btn { padding: 10px 18px; font-size: 0.9375rem; }
+
+    /* ===== Hero ===== */
+    .hero { border-bottom: 1px solid var(--hairline); overflow: hidden; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px;
+      align-items: center;
+      min-height: min(calc(100dvh - 64px), 860px);
+      padding: 48px 0 64px;
+    }
+    .countdown {
+      display: inline-flex; align-items: center; gap: 9px;
+      margin: 0 0 22px; max-width: 100%;
+      padding: 9px 14px;
+      background: var(--danger-tint);
+      border: 1px solid var(--danger-line);
+      border-radius: var(--r-int);
+      font: 500 0.875rem/1.35 var(--font);
+      color: var(--danger-ink);
+    }
+    .countdown b {
+      font-weight: 700; color: var(--danger-ink);
+      font-family: var(--mono); font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .cd-dot {
+      flex: 0 0 auto;
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--danger);
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--danger) 60%, transparent);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .cd-dot { animation: cdpulse 2s var(--ease) infinite; }
+      @keyframes cdpulse {
+        0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--danger) 55%, transparent); }
+        70%  { box-shadow: 0 0 0 7px color-mix(in srgb, var(--danger) 0%, transparent); }
+        100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--danger) 0%, transparent); }
+      }
+    }
+    h1 {
+      margin: 0 0 20px;
+      font-weight: 900;
+      font-size: clamp(2.75rem, 5.4vw, 4.5rem);
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+    }
+    h1 span { display: block; }
+    .lede {
+      margin: 0 0 32px;
+      font-size: 1.1875rem; line-height: 1.55;
+      color: var(--muted); max-width: 44ch;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .micro { margin-top: 18px; font-size: 0.8125rem; color: var(--muted); }
+
+    /* Hero load sequence (one orchestrated pass) */
+    @media (prefers-reduced-motion: no-preference) {
+      .hero .rise { opacity: 0; transform: translateY(14px); animation: rise 640ms var(--ease) forwards; }
+      .hero .rise:nth-child(1) { animation-delay: 60ms; }
+      .hero .rise:nth-child(2) { animation-delay: 160ms; }
+      .hero .rise:nth-child(3) { animation-delay: 260ms; }
+      .hero .rise:nth-child(4) { animation-delay: 360ms; }
+      .hero .rise:nth-child(5) { animation-delay: 460ms; }
+      .demo-col { opacity: 0; transform: translateY(14px); animation: rise 700ms var(--ease) 520ms forwards; }
+      @keyframes rise { to { opacity: 1; transform: none; } }
+    }
+
+    /* ===== Hero demo: the real popup UI, re-skinned to page tokens ===== */
+    .demo-col { position: relative; display: grid; justify-items: center; gap: 0; }
+    .demo { margin: 0; position: relative; width: min(360px, 100%); }
+    .popup {
+      background: var(--surface);
+      border-radius: var(--r-card);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .pbar {
+      height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 12px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .pbar i { width: 9px; height: 9px; border-radius: 50%; background: var(--hairline); }
+    .pbar span { margin-left: auto; font: 500 0.6875rem/1 var(--mono); color: var(--muted); }
+    .pbody { padding: 16px; }
+    .phead strong { display: block; font-weight: 900; font-size: 1rem; letter-spacing: -0.01em; }
+    .phead span { display: block; font-size: 0.75rem; color: var(--muted); margin: 2px 0 14px; }
+    .pfield { display: block; font-size: 0.75rem; font-weight: 500; color: var(--muted); margin-bottom: 10px; }
+    .pfield input {
+      display: block; width: 100%; margin-top: 4px; padding: 8px 10px;
+      font: 500 0.8125rem/1.4 var(--mono);
+      color: var(--ink); background: var(--bg);
+      border: 1px solid var(--hairline); border-radius: var(--r-int);
+    }
+    .pbtn {
+      width: 100%; padding: 10px 12px;
+      font: 700 0.875rem/1 var(--font);
+      color: var(--on-accent); background: var(--accent);
+      border: none; border-radius: var(--r-int);
+      transition: opacity 180ms var(--ease);
+    }
+    .pbtn[data-busy="1"] { opacity: 0.6; }
+    .pstatus {
+      min-height: 18px; margin: 10px 0 0;
+      font: 500 0.75rem/1.5 var(--mono);
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+    }
+    .pstatus.done { color: var(--accent-text); }
+
+    .filecard {
+      width: min(330px, 92%);
+      margin: -14px 0 0 auto;
+      position: relative; z-index: 1;
+      transform: translateX(24px);
+      background: var(--surface);
+      border-radius: var(--r-card);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .fhead {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding: 10px 14px; border-bottom: 1px solid var(--hairline);
+    }
+    .fname { font: 700 0.8125rem/1 var(--mono); }
+    .fmeta { font: 500 0.6875rem/1 var(--mono); color: var(--muted); }
+    .fmeta.ok { color: var(--accent-text); }
+    .frows { padding: 10px 14px 12px; display: grid; gap: 5px; min-height: 128px; }
+    .frow {
+      font: 400 0.6875rem/1.4 var(--mono);
+      color: var(--ink);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .frow.fh { color: var(--muted); }
+    @media (prefers-reduced-motion: no-preference) {
+      .frow[data-in] { opacity: 0; transform: translateY(6px); animation: rowin 260ms var(--ease) forwards; }
+      @keyframes rowin { to { opacity: 1; transform: none; } }
+    }
+    .demo-cap { margin: 18px 4px 0; font-size: 0.75rem; color: var(--muted); text-align: center; }
+
+    /* ===== Scroll reveals (once, 14px rise) ===== */
+    @media (prefers-reduced-motion: no-preference) {
+      [data-reveal] { opacity: 0; transform: translateY(14px); transition: opacity 560ms var(--ease), transform 560ms var(--ease); transition-delay: calc(var(--i, 0) * 60ms); }
+      [data-reveal].in { opacity: 1; transform: none; }
+    }
+
+    /* ===== Sections ===== */
+    section { padding: 96px 0; }
+    h2 {
+      margin: 0 0 10px;
+      font-weight: 900;
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      line-height: 1.1; letter-spacing: -0.02em;
+    }
+    .sub { color: var(--muted); margin: 0 0 48px; max-width: 56ch; font-size: 1.0625rem; }
+
+    /* Situation: full-width statement band */
+    .situation { background: var(--surface); border-bottom: 1px solid var(--hairline); }
+    .situation h2 { max-width: 24ch; font-size: clamp(1.875rem, 3.4vw, 2.75rem); margin-bottom: 20px; }
+    .situation .sub { margin-bottom: 56px; }
+    .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+    .fact b {
+      display: block;
+      font: 700 clamp(1.75rem, 3vw, 2.5rem)/1.1 var(--mono);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+    .fact span { display: block; margin-top: 6px; color: var(--muted); font-size: 0.9375rem; }
+
+    /* Flow diagram: Stocky → StockyLift → files */
+    .flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: stretch; gap: 14px; margin: 0 0 56px; }
+    .fnode {
+      border: 1px solid var(--hairline); border-radius: var(--r-card); background: var(--bg);
+      padding: 18px 20px; display: flex; flex-direction: column; gap: 5px; justify-content: center;
+    }
+    .fnode.act { background: var(--accent-tint); border-color: transparent; }
+    .fnode b { font: 700 1.0625rem/1.2 var(--font); letter-spacing: -0.01em; }
+    .fnode.act b { color: var(--accent-text); }
+    .fnode > span { font-size: 0.8125rem; color: var(--muted); }
+    .fnode .files { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 3px; }
+    .fpill { font: 700 0.6875rem/1 var(--mono); padding: 5px 8px; border-radius: var(--r-chip); border: 1px solid var(--hairline); background: var(--surface); color: var(--ink); }
+    .farrow { align-self: center; font: 700 1.125rem/1 var(--mono); color: var(--muted); }
+
+    /* Steps */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .step { border-left: 1px solid var(--hairline); padding: 6px 32px; }
+    .step:first-child { border-left: 0; padding-left: 0; }
+    .step-n { display: block; font: 700 0.9375rem/1 var(--mono); color: var(--accent-text); margin-bottom: 16px; }
+    .step h3 { margin: 0 0 8px; font: 700 1.125rem/1.3 var(--font); letter-spacing: -0.01em; }
+    .step p { margin: 0; font-size: 0.9375rem; color: var(--muted); }
+    .step code { font: 500 0.8125rem/1.4 var(--mono); color: var(--ink); }
+
+    /* How-it-works: compact steps + live export animation */
+    .hiw-grid { display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 56px; align-items: center; }
+    .steps.vert { grid-template-columns: 1fr; }
+    .steps.vert .step { border-left: 0; border-top: 1px solid var(--hairline); padding: 18px 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; align-items: baseline; }
+    .steps.vert .step:first-child { border-top: 0; padding-top: 0; }
+    .steps.vert .step-n { grid-row: span 2; margin-bottom: 0; align-self: start; padding-top: 2px; }
+    .steps.vert .step h3 { margin: 0; }
+    .steps.vert .step p { grid-column: 2; }
+
+    .hiw-demo {
+      width: 100%; max-width: 460px; margin: 0 auto;
+      background: var(--surface);
+      border-radius: var(--r-card);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .hd-bar {
+      height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 12px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .hd-bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--hairline); }
+    .hd-bar span { margin-left: auto; font: 500 0.6875rem/1 var(--mono); color: var(--muted); }
+    .hd-body { padding: 16px; }
+    .hd-rows { display: grid; gap: 6px; min-height: 132px; }
+    .hd-row {
+      font: 400 0.75rem/1.4 var(--mono); color: var(--ink);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .hd-row.head { color: var(--muted); }
+    .hd-prog { height: 8px; margin: 14px 0 8px; border-radius: 999px; background: var(--accent-tint); overflow: hidden; }
+    .hd-fill { height: 100%; width: 100%; border-radius: 999px; background: var(--accent); }
+    .hd-label { font: 500 0.75rem/1.4 var(--mono); color: var(--muted); opacity: 0; min-height: 17px; }
+    .hd-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 12px;
+      padding: 8px 12px; border-radius: var(--r-int);
+      background: var(--accent-tint);
+      font: 700 0.75rem/1 var(--mono); color: var(--accent-text);
+    }
+    .hd-check {
+      display: grid; place-items: center;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--accent); color: var(--on-accent);
+      font-size: 0.625rem;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .hd-row { opacity: 0; }
+      .hd-row.head { animation: hdr 8s var(--ease) infinite; }
+      .hd-row.r1 { animation: hdr1 8s var(--ease) infinite; }
+      .hd-row.r2 { animation: hdr2 8s var(--ease) infinite; }
+      .hd-row.r3 { animation: hdr3 8s var(--ease) infinite; }
+      .hd-row.r4 { animation: hdr4 8s var(--ease) infinite; }
+      .hd-row.r5 { animation: hdr5 8s var(--ease) infinite; }
+      .hd-fill { animation: hdfill 8s var(--ease) infinite; }
+      .hd-label { animation: hdlabel 8s var(--ease) infinite; }
+      .hd-chip { opacity: 0; animation: hdchip 8s var(--ease) infinite; }
+      @keyframes hdr   { 0%,3% { opacity:0; } 6%,90% { opacity:1; } 96%,100% { opacity:0; } }
+      @keyframes hdr1  { 0%,7% { opacity:0; transform:translateY(6px); } 10%,90% { opacity:1; transform:none; } 96%,100% { opacity:0; } }
+      @keyframes hdr2  { 0%,12% { opacity:0; transform:translateY(6px); } 15%,90% { opacity:1; transform:none; } 96%,100% { opacity:0; } }
+      @keyframes hdr3  { 0%,17% { opacity:0; transform:translateY(6px); } 20%,90% { opacity:1; transform:none; } 96%,100% { opacity:0; } }
+      @keyframes hdr4  { 0%,22% { opacity:0; transform:translateY(6px); } 25%,90% { opacity:1; transform:none; } 96%,100% { opacity:0; } }
+      @keyframes hdr5  { 0%,27% { opacity:0; transform:translateY(6px); } 30%,90% { opacity:1; transform:none; } 96%,100% { opacity:0; } }
+      @keyframes hdfill { 0%,30% { width:0; } 60%,90% { width:100%; } 96%,100% { width:0; } }
+      @keyframes hdlabel { 0%,30% { opacity:0; } 34%,60% { opacity:1; } 66%,100% { opacity:0; } }
+      @keyframes hdchip { 0%,63% { opacity:0; transform:translateY(6px); } 70%,90% { opacity:1; transform:none; } 96%,100% { opacity:0; transform:translateY(6px); } }
+    }
+
+    /* Formats: bento (1 big + 4) */
+    .formats { background: var(--surface); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+    .bento { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(150px, auto); gap: 14px; }
+    .cell {
+      min-width: 0;
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-card);
+      background: var(--bg);
+      padding: 24px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .cell > * { min-width: 0; }
+    .cell.big { grid-column: span 2; grid-row: span 2; padding: 28px; }
+    .cell h3 { margin: 0; font: 700 1.0625rem/1.3 var(--font); letter-spacing: -0.01em; }
+    .cell.big h3 { font-size: 1.375rem; }
+    .cell p { margin: 0; font-size: 0.875rem; color: var(--muted); }
+    .chip {
+      align-self: flex-start;
+      font: 700 0.6875rem/1 var(--mono);
+      letter-spacing: 0.04em;
+      padding: 5px 8px; border-radius: var(--r-chip);
+      border: 1px solid var(--hairline); color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .chip.sure { color: var(--accent-text); border-color: transparent; background: var(--accent-tint); }
+    .csv-strip {
+      margin-top: auto;
+      border: 1px solid var(--hairline); border-radius: var(--r-int);
+      background: var(--surface);
+      padding: 12px 14px;
+      display: grid; gap: 5px;
+      overflow: hidden;
+    }
+    .csv-strip div { font: 400 0.6875rem/1.4 var(--mono); white-space: nowrap; }
+    .csv-strip .h { color: var(--muted); }
+    .json-snip {
+      margin-top: auto;
+      font: 400 0.6875rem/1.5 var(--mono);
+      color: var(--muted);
+      white-space: pre; overflow: hidden;
+    }
+    .filetag {
+      align-self: flex-start; margin-top: auto; max-width: 100%;
+      font: 400 0.75rem/1.3 var(--mono); color: var(--muted);
+      border: 1px solid var(--hairline); border-radius: var(--r-chip);
+      background: var(--surface); padding: 8px 10px;
+      display: inline-flex; align-items: center; gap: 7px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .filetag b { color: var(--ink); font-weight: 700; }
+    .filetag .dot { flex: 0 0 auto; width: 7px; height: 7px; border-radius: 2px; background: var(--accent); }
+
+    /* Privacy: 2-col */
+    .privacy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .privacy-grid .sub { margin-bottom: 0; }
+    .checks { display: grid; gap: 0; }
+    .check { display: flex; gap: 14px; padding: 18px 0; border-top: 1px solid var(--hairline); }
+    .check:first-child { border-top: 0; padding-top: 4px; }
+    .check .tick { flex: 0 0 auto; font: 700 1rem/1.5 var(--mono); color: var(--accent-text); }
+    .check div b { display: block; font-weight: 700; }
+    .check div span { color: var(--muted); font-size: 0.9375rem; }
+
+    /* Pricing + FAQ */
+    .buy-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: start; }
+    .price-card {
+      position: sticky; top: 96px;
+      background: var(--surface);
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-card);
+      padding: 32px 30px;
+    }
+    .price { font: 700 3.25rem/1 var(--mono); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+    .price-line { color: var(--muted); font-size: 0.9375rem; margin: 10px 0 0; }
+    .price-rise { color: var(--muted); font-size: 0.8125rem; margin: 2px 0 24px; }
+    .price-rise b { color: var(--ink); font-family: var(--mono); font-weight: 700; }
+    .price-list { list-style: none; margin: 0 0 26px; padding: 0; }
+    .price-list li { padding: 9px 0 9px 30px; position: relative; font-size: 0.9375rem; border-top: 1px solid var(--hairline); }
+    .price-list li:first-child { border-top: 0; }
+    .price-list li::before { content: "✓"; font-family: var(--mono); font-weight: 700; color: var(--accent-text); position: absolute; left: 4px; }
+    .price-card .btn { display: block; width: 100%; text-align: center; }
+    .price-card .micro { margin-top: 14px; }
+    .faq { display: grid; gap: 10px; }
+    .qa {
+      background: var(--surface);
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-card);
+      transition: border-color 180ms var(--ease);
+    }
+    .qa:hover { border-color: color-mix(in srgb, var(--ink) 22%, var(--hairline)); }
+    .qa[open] { border-color: color-mix(in srgb, var(--accent) 34%, var(--hairline)); }
+    .qa summary {
+      list-style: none; cursor: pointer;
+      display: flex; align-items: center; gap: 16px;
+      padding: 19px 22px;
+      font: 700 1.0625rem/1.4 var(--font); letter-spacing: -0.01em; color: var(--ink);
+    }
+    .qa summary::-webkit-details-marker { display: none; }
+    .qa summary::after {
+      content: ""; flex: 0 0 auto; margin-left: auto;
+      width: 10px; height: 10px;
+      border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+      transform: translateY(-2px) rotate(45deg);
+      transition: transform 240ms var(--ease), border-color 180ms var(--ease);
+    }
+    .qa[open] summary::after { transform: translateY(2px) rotate(225deg); }
+    .qa summary:hover::after { border-color: var(--accent-text); }
+    .qa .ans { padding: 0 22px 20px; }
+    .qa .ans p { margin: 0; color: var(--muted); font-size: 0.9375rem; }
+    .qa code { font: 500 0.8125rem/1.4 var(--mono); color: var(--ink); }
+    .qa strong { color: var(--ink); font-weight: 700; }
+    @media (prefers-reduced-motion: reduce) {
+      .qa summary::after { transition: none; }
+    }
+
+    /* Footer */
+    footer {
+      color: var(--muted);
+      font-size: 0.8125rem;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--hairline);
+      text-align: center;
+    }
+    footer p { margin: 6px 0; }
+    footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    footer a:hover { color: var(--accent-text); }
+
+    /* ===== Mobile ===== */
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 40px; min-height: 0; padding: 56px 0; }
+      .lede { max-width: 56ch; }
+      .facts { grid-template-columns: 1fr; gap: 28px; }
+      .flow { grid-template-columns: 1fr; gap: 10px; }
+      .farrow { transform: rotate(90deg); justify-self: center; }
+      .hiw-grid { grid-template-columns: 1fr; gap: 36px; }
+      .steps { grid-template-columns: 1fr; }
+      .step { border-left: 0; border-top: 1px solid var(--hairline); padding: 24px 0; }
+      .step:first-child { border-top: 0; padding-top: 0; }
+      .bento { grid-template-columns: 1fr 1fr; }
+      .cell.big { grid-column: span 2; grid-row: auto; }
+      .privacy-grid, .buy-grid { grid-template-columns: 1fr; gap: 40px; }
+      .price-card { position: static; }
+      section { padding: 72px 0; }
+    }
+    @media (max-width: 560px) {
+      .bento { grid-template-columns: 1fr; }
+      .cell.big { grid-column: auto; }
+      .filecard { transform: translateX(8px); }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="wrap nav-in">
+      <a class="wordmark" href="#top"><span class="mark">S</span>StockyLift</a>
+      <a class="btn btn-primary" href="#pricing">Get StockyLift</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="countdown rise" id="countdown" role="timer" aria-live="off"><span class="cd-dot"></span><span>Counting down to Aug 31, 2026</span></p>
+        <h1 class="rise"><span>Stocky shuts down</span><span>Aug 31.</span></h1>
+        <p class="lede rise">There is no supplier export button. StockyLift adds one. Your full list, out to CSV, in two minutes.</p>
+        <div class="cta-row rise">
+          <a class="btn btn-primary" href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a>
+          <a class="btn btn-ghost" href="#how">See how it works</a>
+        </div>
+        <p class="micro rise">$39 once. No subscription, no account, nothing leaves your browser.</p>
+      </div>
+
+      <div class="demo-col">
+        <figure class="demo" role="img" aria-label="Animation of the StockyLift extension popup fetching 42 suppliers from Stocky and writing them into suppliers.csv">
+          <div aria-hidden="true">
+            <div class="popup">
+              <div class="pbar"><i></i><i></i><i></i><span>Extensions</span></div>
+              <div class="pbody">
+                <div class="phead">
+                  <strong>StockyLift</strong>
+                  <span>Export your Stocky suppliers before Aug 31 2026.</span>
+                </div>
+                <label class="pfield">Store name
+                  <input value="acme-supply.myshopify.com" readonly tabindex="-1" />
+                </label>
+                <label class="pfield">Stocky API key
+                  <input type="password" value="demo-key-demo-key" readonly tabindex="-1" />
+                </label>
+                <button class="pbtn" id="dBtn" tabindex="-1">Fetch suppliers</button>
+                <p class="pstatus" id="dStatus">&nbsp;</p>
+              </div>
+            </div>
+            <div class="filecard">
+              <div class="fhead">
+                <span class="fname">suppliers.csv</span>
+                <span class="fmeta" id="dMeta"></span>
+              </div>
+              <div class="frows" id="dRows"></div>
+            </div>
+          </div>
+          <figcaption class="demo-cap">The real popup UI, running a scripted export.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <section class="situation">
+    <div class="wrap">
+      <h2 data-reveal>Shopify's migration doc says to recreate every supplier by hand.</h2>
+      <p class="sub" data-reveal style="--i:1">There's a shorter path. StockyLift reads Stocky's own API and writes clean files.</p>
+      <div class="flow" data-reveal style="--i:2" role="img" aria-label="Data flows from the Stocky API, through the StockyLift extension in your browser, out to CSV and JSON files.">
+        <div class="fnode">
+          <b>Stocky API</b>
+          <span>Live until Aug 31, 2026</span>
+        </div>
+        <div class="farrow" aria-hidden="true">→</div>
+        <div class="fnode act">
+          <b>StockyLift</b>
+          <span>Runs in your browser</span>
+        </div>
+        <div class="farrow" aria-hidden="true">→</div>
+        <div class="fnode">
+          <b>Your files</b>
+          <div class="files"><span class="fpill">CSV</span><span class="fpill">JSON</span></div>
+        </div>
+      </div>
+      <div class="facts">
+        <div class="fact" data-reveal style="--i:2"><b class="mono">Aug 31, 2026</b><span>Stocky and its API go dark</span></div>
+        <div class="fact" data-reveal style="--i:3"><b class="mono">18</b><span>supplier fields StockyLift exports, verified</span></div>
+        <div class="fact" data-reveal style="--i:4"><b class="mono">0</b><span>export buttons in the Stocky UI</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <h2 data-reveal>Two minutes, three steps</h2>
+      <p class="sub" data-reveal style="--i:1">No account, no sign-up, no server in the middle.</p>
+      <div class="hiw-grid">
+        <div class="steps vert" data-reveal style="--i:2">
+          <div class="step">
+            <span class="step-n mono">1</span>
+            <h3>Paste your key</h3>
+            <p>From <code>Stocky, Preferences, API</code>. Stays in your browser.</p>
+          </div>
+          <div class="step">
+            <span class="step-n mono">2</span>
+            <h3>Preview free</h3>
+            <p>See your supplier count before you pay.</p>
+          </div>
+          <div class="step">
+            <span class="step-n mono">3</span>
+            <h3>Export everything</h3>
+            <p>Every format, one download.</p>
+          </div>
+        </div>
+        <div class="hiw-demo" data-reveal style="--i:3" role="img" aria-label="Animation: supplier rows load, a progress bar fills while exporting 42 suppliers, then a suppliers.csv file with 42 rows is produced.">
+          <div class="hd-bar" aria-hidden="true"><i></i><i></i><i></i><span>StockyLift</span></div>
+          <div class="hd-body" aria-hidden="true">
+            <div class="hd-rows">
+              <div class="hd-row head">name,email,city,payment_terms</div>
+              <div class="hd-row r1">Northwind Textile Co.</div>
+              <div class="hd-row r2">Harbor &amp; Pine Ceramics</div>
+              <div class="hd-row r3">Golden Valley Organics</div>
+              <div class="hd-row r4">Cascade Paper Goods</div>
+              <div class="hd-row r5">Ironwood Furniture Works</div>
+            </div>
+            <div class="hd-prog"><div class="hd-fill"></div></div>
+            <div class="hd-label">Exporting 42 suppliers…</div>
+            <div class="hd-chip"><span class="hd-check">✓</span>suppliers.csv — 42 rows</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="formats">
+    <div class="wrap">
+      <h2 data-reveal>Every field, every format</h2>
+      <p class="sub" data-reveal style="--i:1">Files built for wherever you land next, or just for keeping.</p>
+      <div class="bento">
+        <div class="cell big" data-reveal style="--i:2">
+          <span class="chip sure mono">GUARANTEED</span>
+          <h3>Generic CSV</h3>
+          <p>All 18 fields · RFC-4180 + BOM, opens clean in Excel.</p>
+          <div class="csv-strip" aria-hidden="true">
+            <div class="h">name,email,phone,address_city,payment_terms</div>
+            <div>Northwind Textile Co.,orders@northwind.example,…</div>
+            <div>Harbor &amp; Pine Ceramics,hello@harborpine.example,…</div>
+            <div>Golden Valley Organics,sales@goldenvalley.example,…</div>
+          </div>
+        </div>
+        <div class="cell" data-reveal style="--i:3">
+          <span class="chip sure mono">GUARANTEED</span>
+          <h3>JSON backup</h3>
+          <p>The raw records, exactly as Stocky returned them.</p>
+          <div class="json-snip" aria-hidden="true">{ "suppliers": 42,
+  "fields": 18 }</div>
+        </div>
+        <div class="cell" data-reveal style="--i:4">
+          <span class="chip mono">BETA</span>
+          <h3>Prediko</h3>
+          <div class="filetag" aria-hidden="true"><span class="dot"></span><b>prediko-suppliers</b>.csv</div>
+        </div>
+        <div class="cell" data-reveal style="--i:5">
+          <span class="chip mono">BETA</span>
+          <h3>Inventory Planner</h3>
+          <div class="filetag" aria-hidden="true"><span class="dot"></span><b>ip-vendors</b>.csv</div>
+        </div>
+        <div class="cell" data-reveal style="--i:6">
+          <span class="chip mono">BETA</span>
+          <h3>Genie</h3>
+          <div class="filetag" aria-hidden="true"><span class="dot"></span><b>genie-suppliers</b>.csv</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap privacy-grid">
+      <div>
+        <h2 data-reveal>Runs in your browser. All of it.</h2>
+        <p class="sub" data-reveal style="--i:1">StockyLift is a Chrome extension, not a service. There is no server to trust because there is no server.</p>
+      </div>
+      <div class="checks">
+        <div class="check" data-reveal style="--i:2"><span class="tick mono">✓</span><div><b>One network call</b><span>Your own authenticated request, straight from your browser to Stocky.</span></div></div>
+        <div class="check" data-reveal style="--i:3"><span class="tick mono">✓</span><div><b>Your key stays put</b><span>The API key is used locally and never sent anywhere else.</span></div></div>
+        <div class="check" data-reveal style="--i:4"><span class="tick mono">✓</span><div><b>No account, no analytics</b><span>Nobody sees your supplier list. There is nothing to log in to.</span></div></div>
+        <div class="check" data-reveal style="--i:5"><span class="tick mono">✓</span><div><b>Files are yours forever</b><span>CSVs and JSON on your disk, useful long after the API dies.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap buy-grid">
+      <div class="price-card" data-reveal>
+        <div class="price mono">$39</div>
+        <p class="price-line">One store, one-time. Not a subscription.</p>
+        <p class="price-rise">Rises to <b>$59</b> on Aug 10. Lock it in now.</p>
+        <ul class="price-list">
+          <li>Every supplier, no row limit</li>
+          <li>Generic CSV and JSON backup, guaranteed</li>
+          <li>Prediko, Inventory Planner, and Genie presets (beta)</li>
+          <li>Free preview before you pay</li>
+          <li>Updates through the shutdown</li>
+        </ul>
+        <a class="btn btn-primary" href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a>
+        <p class="micro">Unlock code arrives instantly after checkout.</p>
+        <p class="micro">If it can't export your suppliers cleanly, full refund. Reply to your receipt.</p>
+      </div>
+      <div>
+        <h2 data-reveal>Questions merchants actually ask</h2>
+        <p class="sub" data-reveal style="--i:1">Straight answers before you buy — tap any question.</p>
+
+        <div class="faq">
+          <details class="qa" data-reveal style="--i:2">
+            <summary>Shopify says suppliers must be recreated manually. Is this legit?</summary>
+            <div class="ans"><p>Shopify's docs say to recreate suppliers by hand because there's no export button in the Stocky UI. But Stocky still exposes your suppliers through its own documented API. StockyLift just calls that API with your own key and writes the result to a CSV. Nothing is scraped and nothing is reverse-engineered.</p></div>
+          </details>
+          <details class="qa" data-reveal>
+            <summary>Is this allowed?</summary>
+            <div class="ans"><p>Yes. It's <strong>your own data</strong>, pulled through <strong>Stocky's own documented API</strong> using <strong>your own API key</strong>. The request goes straight from your browser to Stocky, authenticated as you. We never touch your key or your data.</p></div>
+          </details>
+          <details class="qa" data-reveal>
+            <summary>What happens after August 31, 2026?</summary>
+            <div class="ans"><p>Once Stocky shuts down, its API goes away, so export while it's still live. The files StockyLift produces are yours forever: import them into your new app whenever you're ready, or just keep them as a backup. Export now even if you haven't picked a replacement yet.</p></div>
+          </details>
+          <details class="qa" data-reveal>
+            <summary>Where do the exported files go?</summary>
+            <div class="ans"><p>Straight to your browser's <strong>Downloads folder</strong>, like any other download. They're plain <code>.csv</code> and <code>.json</code> files on your own disk — keep them, move them, or import them into a new app whenever you're ready.</p></div>
+          </details>
+          <details class="qa" data-reveal>
+            <summary>Which apps do the presets support?</summary>
+            <div class="ans"><p>The <strong>Generic CSV</strong> (every Stocky field) and the raw <strong>JSON backup</strong> are <strong>guaranteed</strong>. The <strong>Prediko</strong>, <strong>Inventory Planner</strong>, and <strong>Genie</strong> presets are <strong>beta</strong>, verified against each app's published import docs, with final templates being confirmed. Verify a preset against a real template before a large import, or just use the Generic CSV, which always holds all your data.</p></div>
+          </details>
+          <details class="qa" data-reveal>
+            <summary>Where do I find my Stocky API key?</summary>
+            <div class="ans"><p>In Stocky, open <strong>Preferences</strong>, then <strong>API</strong>. Copy the key shown there and paste it into StockyLift along with your <code>your-store.myshopify.com</code> store name. The key stays in your browser.</p></div>
+          </details>
+          <details class="qa" data-reveal>
+            <summary>Do you see my supplier data or my API key?</summary>
+            <div class="ans"><p>No. There are no servers and no account. Everything runs inside your browser. Your key and data never leave your machine except for the one authenticated request your browser makes to Stocky.</p></div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>StockyLift is an independent tool and is not affiliated with or endorsed by Shopify or Stocky.</p>
+    <p><a href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a> · <a href="blog/index.html">Blog</a> · <a href="privacy.html">Privacy</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+      var REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      /* ---- Live countdown to the shutdown (real state, ticks 1/s) ---- */
+      var END = Date.parse("2026-08-31T23:59:59Z");
+      var elC = document.getElementById("countdown");
+      var DOT = '<span class="cd-dot" aria-hidden="true"></span>';
+      function pad(n) { return String(n).padStart(2, "0"); }
+      function renderCount() {
+        var ms = END - Date.now();
+        if (ms <= 0) {
+          elC.style.color = "var(--muted)";
+          elC.innerHTML = DOT + "<span>Stocky's API is offline. The files you exported still work.</span>";
+          return;
+        }
+        var s = Math.floor(ms / 1000);
+        var d = Math.floor(s / 86400);
+        var h = Math.floor((s % 86400) / 3600);
+        var m = Math.floor((s % 3600) / 60);
+        elC.innerHTML = DOT + "<span>Stocky shuts down in <b>" + d + " days " + pad(h) + "h " + pad(m) + "m</b> — after that, your supplier data is gone.</span>";
+      }
+      renderCount();
+      if (!REDUCE) setInterval(renderCount, 1000);
+
+      /* ---- Scroll reveals: once per element, 14px rise ---- */
+      if (!REDUCE && "IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.2 });
+        document.querySelectorAll("[data-reveal]").forEach(function (el) { io.observe(el); });
+      } else {
+        document.querySelectorAll("[data-reveal]").forEach(function (el) { el.classList.add("in"); });
+      }
+
+      /* ---- FAQ accordion: one open at a time ---- */
+      var faqItems = document.querySelectorAll(".qa");
+      faqItems.forEach(function (d) {
+        d.addEventListener("toggle", function () {
+          if (d.open) {
+            faqItems.forEach(function (o) { if (o !== d) o.open = false; });
+          }
+        });
+      });
+
+      /* ---- Hero demo: scripted export, pauses off-screen, static frame under reduced motion ---- */
+      var btn = document.getElementById("dBtn");
+      var status = document.getElementById("dStatus");
+      var meta = document.getElementById("dMeta");
+      var rows = document.getElementById("dRows");
+      var HEADER = "name,email,phone,address_city,…";
+      var ROWS = [
+        "Northwind Textile Co.,orders@northwind.example,…",
+        "Harbor & Pine Ceramics,hello@harborpine.example,…",
+        "Golden Valley Organics,sales@goldenvalley.example,…",
+        "Cascade Paper Goods,supply@cascadepaper.example,…",
+        "Ironwood Furniture Works,sales@ironwood.example,…"
+      ];
+      function setRows(list, animate) {
+        rows.innerHTML = "";
+        var h = document.createElement("div");
+        h.className = "frow fh"; h.textContent = HEADER;
+        rows.appendChild(h);
+        list.forEach(function (r, i) {
+          var el = document.createElement("div");
+          el.className = "frow"; el.textContent = r;
+          if (animate) { el.setAttribute("data-in", ""); el.style.animationDelay = (i * 90) + "ms"; }
+          rows.appendChild(el);
+        });
+      }
+      function finalFrame() {
+        btn.removeAttribute("data-busy");
+        status.textContent = "42 suppliers ready to export.";
+        status.classList.add("done");
+        setRows(ROWS.concat(["… 37 more rows"]), false);
+        meta.textContent = "42 rows ✓";
+        meta.classList.add("ok");
+      }
+      if (REDUCE) { finalFrame(); return; }
+
+      var timers = [];
+      var running = false;
+      function at(t, fn) { timers.push(setTimeout(fn, t)); }
+      function cycle() {
+        running = true;
+        timers = [];
+        btn.removeAttribute("data-busy");
+        status.textContent = " ";
+        status.classList.remove("done");
+        meta.textContent = ""; meta.classList.remove("ok");
+        setRows([], false);
+        at(600, function () { btn.setAttribute("data-busy", "1"); status.textContent = "Connecting to acme-supply…"; });
+        at(1600, function () { status.textContent = "Fetched page 1: 18 suppliers"; });
+        at(2600, function () { status.textContent = "Fetched page 2: 42 suppliers"; });
+        at(3400, function () {
+          btn.removeAttribute("data-busy");
+          status.textContent = "42 suppliers ready to export.";
+          status.classList.add("done");
+          meta.textContent = "writing…";
+          setRows(ROWS, true);
+        });
+        at(4600, function () { setRows(ROWS.concat(["… 37 more rows"]), false); });
+        at(5000, function () { meta.textContent = "42 rows ✓"; meta.classList.add("ok"); });
+        at(12000, function () { running = false; if (visible) cycle(); });
+      }
+      function stop() { timers.forEach(clearTimeout); running = false; }
+
+      var visible = false;
+      var demoEl = document.querySelector(".demo");
+      var vio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          visible = e.isIntersecting;
+          if (visible && !running) cycle();
+          if (!visible) { stop(); }
+        });
+      }, { threshold: 0.3 });
+      vio.observe(demoEl);
+    })();
+  </script>
+</body>
+</html>

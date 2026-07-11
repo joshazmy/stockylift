@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog · StockyLift — Exporting your data before Stocky shuts down</title>
+  <meta name="description" content="Guides on exporting your suppliers and data from Shopify's Stocky before it shuts down on August 31, 2026 — sourced from Shopify's official transition doc." />
+  <link rel="canonical" href="https://joshazmy.github.io/stockylift/blog/index.html" />
+  <meta property="og:title" content="StockyLift Blog — Exporting your data before Stocky shuts down" />
+  <meta property="og:description" content="Guides on exporting suppliers and data from Stocky before the August 31, 2026 shutdown." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232742e8'/%3E%3Ctext x='32' y='43' font-family='monospace' font-size='34' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
+  <style>
+    @font-face { font-family: "Satoshi"; src: url("../fonts/satoshi-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Satoshi"; src: url("../fonts/satoshi-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Satoshi"; src: url("../fonts/satoshi-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Satoshi"; src: url("../fonts/satoshi-900.woff2") format("woff2"); font-weight: 900; font-style: normal; font-display: swap; }
+
+    :root {
+      --bg: #fafbfc; --surface: #ffffff; --hairline: #e4e7eb;
+      --ink: #16181d; --muted: #4b5158;
+      --accent: #2742e8; --accent-ink: #1e34c4; --accent-text: #2742e8; --accent-tint: #eef1fe; --on-accent: #ffffff;
+      --font: "Satoshi", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      --r-int: 10px; --r-card: 14px; --r-chip: 6px;
+      --ease: cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #101114; --surface: #17181c; --hairline: #2a2c32;
+        --ink: #e9eaee; --muted: #a6abb5;
+        --accent: #2742e8; --accent-ink: #4a61f0; --accent-text: #7d8cff; --accent-tint: #1b2040;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; font: 400 1rem/1.7 var(--font); color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent-text); text-decoration: none; }
+    a:hover { color: var(--accent-ink); }
+    :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; border-radius: var(--r-chip); }
+    .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+    nav {
+      position: sticky; top: 0; z-index: 10; height: 64px;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(8px); border-bottom: 1px solid var(--hairline);
+    }
+    .nav-in { max-width: 780px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .wordmark { display: inline-flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.0625rem; letter-spacing: -0.01em; color: var(--ink); }
+    .wordmark:hover { color: var(--ink); }
+    .wordmark .mark { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; font: 700 0.8125rem/1 var(--mono); color: var(--on-accent); background: var(--accent); }
+    .btn { display: inline-block; font: 700 0.9375rem/1 var(--font); text-decoration: none; padding: 10px 18px; border-radius: var(--r-int); border: 1px solid transparent; cursor: pointer; white-space: nowrap; transition: background 180ms var(--ease), color 180ms var(--ease); }
+    .btn-primary { background: var(--accent); color: var(--on-accent); }
+    .btn-primary:hover { background: var(--accent-ink); color: var(--on-accent); }
+
+    .wrap { max-width: 780px; margin: 0 auto; padding: 48px 24px 40px; }
+    .head h1 { margin: 0 0 12px; font-weight: 900; font-size: clamp(2rem, 4.4vw, 2.75rem); line-height: 1.06; letter-spacing: -0.025em; }
+    .head p { margin: 0 0 8px; color: var(--muted); font-size: 1.0625rem; max-width: 58ch; }
+
+    .posts { display: grid; gap: 16px; margin-top: 40px; }
+    .post {
+      display: block; padding: 26px 28px;
+      background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-card);
+      transition: border-color 180ms var(--ease), transform 120ms var(--ease);
+    }
+    .post:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--hairline)); }
+    .post .tag { display: inline-block; font: 700 0.6875rem/1 var(--mono); letter-spacing: 0.04em; color: var(--accent-text); background: var(--accent-tint); padding: 5px 8px; border-radius: var(--r-chip); margin-bottom: 12px; }
+    .post h2 { margin: 0 0 8px; font-weight: 900; font-size: 1.3125rem; line-height: 1.25; letter-spacing: -0.015em; color: var(--ink); }
+    .post p { margin: 0; color: var(--muted); font-size: 0.9375rem; }
+    .post .more { display: inline-block; margin-top: 12px; font-weight: 700; font-size: 0.9375rem; color: var(--accent-text); }
+
+    footer {
+      color: var(--muted); font-size: 0.8125rem; padding: 40px 24px 56px;
+      border-top: 1px solid var(--hairline); text-align: center; margin-top: 56px;
+    }
+    footer p { margin: 6px 0; }
+    footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    footer a:hover { color: var(--accent-text); }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-in">
+      <a class="wordmark" href="../index.html"><span class="mark">S</span>StockyLift</a>
+      <a class="btn btn-primary" href="../index.html">Get StockyLift</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <div class="head">
+      <h1>Getting your data out of Stocky</h1>
+      <p>Practical, source-checked guides on exporting your suppliers and inventory data before Shopify's Stocky shuts down on August 31, 2026. Every factual claim traces to Shopify's official transition documentation.</p>
+    </div>
+
+    <div class="posts">
+      <a class="post" href="export-stocky-suppliers.html">
+        <span class="tag mono">START HERE</span>
+        <h2>How to export suppliers from Stocky (before the August 2026 shutdown)</h2>
+        <p>Stocky has no supplier export button. Here is the read-only API route to get your supplier list out — and a faster two-minute packaged option.</p>
+        <span class="more">Read the guide →</span>
+      </a>
+      <a class="post" href="what-stocky-data-can-be-exported.html">
+        <span class="tag mono">REFERENCE</span>
+        <h2>What Stocky data can and cannot be exported</h2>
+        <p>Products live in Shopify already. POs and stocktakes export as CSV. Suppliers cannot be exported natively. The definitive breakdown, with the fixes.</p>
+        <span class="more">Read the guide →</span>
+      </a>
+      <a class="post" href="stocky-shutting-down-what-to-do.html">
+        <span class="tag mono">OVERVIEW</span>
+        <h2>Stocky is shutting down: what to do before August 31, 2026</h2>
+        <p>What migrates automatically, what you must move by hand, and how to rescue your supplier list before the APIs die. The full migration plan.</p>
+        <span class="more">Read the guide →</span>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <p>StockyLift is an independent tool and is not affiliated with or endorsed by Shopify or Stocky.</p>
+    <p><a href="../index.html">StockyLift</a> · <a href="../privacy.html">Privacy</a></p>
+  </footer>
+</body>
+</html>

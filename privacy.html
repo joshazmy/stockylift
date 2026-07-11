@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy · StockyLift</title>
+  <meta name="description" content="StockyLift privacy policy. The extension runs entirely in your browser: your Stocky API key and supplier data never leave your machine, and we run no analytics." />
+  <style>
+    @font-face { font-family: "General Sans"; src: url("fonts/general-sans-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "General Sans"; src: url("fonts/general-sans-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: "General Sans"; src: url("fonts/general-sans-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+
+    :root {
+      --bg: #fafaf9;
+      --surface: #ffffff;
+      --hairline: #e7e5e4;
+      --text: #1c1917;
+      --muted: #57534e;
+      --accent-ink: #047857;
+      --accent-hover: #065f46;
+      --accent: #059669;
+      --accent-tint: #ecfdf5;
+      --font: "General Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --r-card: 12px;
+      --maxw: 65ch;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0c0a09;
+        --surface: #1c1917;
+        --hairline: #292524;
+        --text: #fafaf9;
+        --muted: #a8a29e;
+        --accent-ink: #34d399;
+        --accent-hover: #6ee7b7;
+        --accent: #34d399;
+        --accent-tint: #064e3b22;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      font: 400 1rem/1.65 var(--font);
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 56px 20px 64px; }
+    a { color: var(--accent-ink); }
+    a:hover { color: var(--accent-hover); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+    h1 { font: 600 clamp(1.75rem, 5vw, 2.375rem)/1.1 var(--font); letter-spacing: -0.02em; margin: 0 0 6px; }
+    .updated { color: var(--muted); font-size: 0.875rem; margin: 0 0 32px; }
+    h2 { font: 600 1.25rem/1.3 var(--font); letter-spacing: -0.01em; margin: 34px 0 10px; }
+    p, li { color: var(--text); }
+    code { font: 0.875rem/1 var(--mono); background: var(--accent-tint); color: var(--accent-ink); padding: 2px 6px; border-radius: 6px; }
+    ul { padding-left: 22px; }
+    li { margin: 8px 0; }
+    .tldr {
+      background: var(--accent-tint);
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-card);
+      padding: 20px 22px;
+      margin: 8px 0 4px;
+    }
+    .tldr p { margin: 0; color: var(--muted); }
+    .tldr strong { color: var(--text); font-weight: 600; }
+    footer {
+      margin-top: 48px; padding-top: 24px;
+      border-top: 1px solid var(--hairline);
+      color: var(--muted); font-size: 0.8125rem; text-align: center;
+    }
+    footer p { margin: 6px 0; }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--accent-ink); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Privacy Policy</h1>
+    <!-- TODO: update the date if the policy changes -->
+    <p class="updated">Last updated: July 10, 2026</p>
+
+    <div class="tldr">
+      <p><strong>The short version:</strong> StockyLift runs entirely in your
+      browser. Your Stocky API key and your supplier data never leave your machine and never
+      reach any server of ours. We run no analytics and have no account system.</p>
+    </div>
+
+    <h2>What the extension stores</h2>
+    <p>StockyLift stores a small amount of data locally on your own device, in Chrome's
+    <code>chrome.storage.local</code>. Nothing here is sent to us:</p>
+    <ul>
+      <li>Your <strong>unlock state</strong> (whether a valid unlock code has been entered), so
+      you don't have to re-enter it every time.</li>
+    </ul>
+    <p>That is the only thing it stores. Your store name and Stocky API key are used for the
+    export you trigger and are <strong>never saved anywhere</strong> — not on your device, not
+    with us. You re-enter them each time.</p>
+    <p>You can clear all of it at any time by removing the extension.</p>
+
+    <h2>Your supplier data</h2>
+    <p>When you run an export, the extension fetches your suppliers <strong>directly from Stocky's
+    own API</strong>. The request goes from your browser to Stocky, authenticated with your own
+    API key. The data is written to files on your computer (CSV or JSON) that you download.
+    <strong>StockyLift has no servers that receive, see, or store your supplier data.</strong></p>
+
+    <h2>Analytics and tracking</h2>
+    <p>None. StockyLift includes no analytics, no trackers, no advertising SDKs, and no telemetry.
+    We do not build a profile of you and we do not sell anything about you. There is nothing to
+    sell, because we never receive your data.</p>
+    <p>One honest footnote: we tag our own outbound links (for example, a different buy link in a
+    forum post than in a blog post) so we know which posts sent buyers. That tells us about our
+    links, not about you — we do not track you, set cookies, or collect analytics on this site or
+    in the extension.</p>
+
+    <h2>Payment and unlock codes</h2>
+    <p>If you purchase StockyLift, payment is handled by <strong>Gumroad</strong>. Gumroad tells us
+    a sale happened and gives us the email address you used at checkout, which we use for exactly
+    one thing: sending you your unlock code. <strong>We never see your card details, and the
+    purchase is completely separate from the extension — nothing about your store, your API key,
+    or your supplier data is ever connected to it.</strong> Gumroad's own handling of your payment
+    details is covered by <a href="https://gumroad.com/privacy">Gumroad's privacy policy</a>.</p>
+
+    <h2>Permissions</h2>
+    <p>The extension requests only the permissions it needs to fetch from Stocky's API and to save
+    files you download. It does not read your browsing history or the content of other websites.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, we'll update the date at the top of this page.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about privacy? Email <a href="mailto:stockylift@pm.me">stockylift@pm.me</a>.</p>
+
+    <footer>
+      <p><a href="index.html">← Back to StockyLift</a></p>
+      <p>StockyLift is an independent tool and is not affiliated with or endorsed by Shopify or Stocky.</p>
+    </footer>
+  </div>
+</body>
+</html>
