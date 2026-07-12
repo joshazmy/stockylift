@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Move your Stocky data to Sumtracker · StockyLift</title>
+  <meta name="description" content="Step-by-step: export stocky suppliers and purchase orders with StockyLift, then import the CSV into Sumtracker before the stocky api sunset on Aug 31, 2026." />
+  <link rel="canonical" href="https://joshazmy.github.io/stockylift/migrate/migrate-to-sumtracker.html" />
+  <meta property="og:title" content="Move your Stocky data to Sumtracker · StockyLift" />
+  <meta property="og:description" content="Step-by-step: export stocky suppliers and purchase orders with StockyLift, then import the CSV into Sumtracker before the stocky api sunset on Aug 31, 2026." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232742e8'/%3E%3Ctext x='32' y='43' font-family='monospace' font-size='34' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
+  <style>
+    @font-face { font-family: "Satoshi"; src: url("../fonts/satoshi-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Satoshi"; src: url("../fonts/satoshi-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Satoshi"; src: url("../fonts/satoshi-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Satoshi"; src: url("../fonts/satoshi-900.woff2") format("woff2"); font-weight: 900; font-style: normal; font-display: swap; }
+
+    :root {
+      --bg: #fafbfc; --surface: #ffffff; --hairline: #e4e7eb;
+      --ink: #16181d; --muted: #4b5158;
+      --accent: #2742e8; --accent-ink: #1e34c4; --accent-text: #2742e8; --accent-tint: #eef1fe; --on-accent: #ffffff;
+      --font: "Satoshi", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      --r-int: 10px; --r-card: 14px; --r-chip: 6px;
+      --ease: cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #101114; --surface: #17181c; --hairline: #2a2c32;
+        --ink: #e9eaee; --muted: #a6abb5;
+        --accent: #2742e8; --accent-ink: #4a61f0; --accent-text: #7d8cff; --accent-tint: #1b2040;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; font: 400 1rem/1.7 var(--font); color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent-text); text-decoration: none; }
+    a:hover { color: var(--accent-ink); }
+    :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; border-radius: var(--r-chip); }
+    .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+    nav {
+      position: sticky; top: 0; z-index: 10; height: 64px;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(8px); border-bottom: 1px solid var(--hairline);
+    }
+    .nav-in { max-width: 780px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .wordmark { display: inline-flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.0625rem; letter-spacing: -0.01em; color: var(--ink); }
+    .wordmark:hover { color: var(--ink); }
+    .wordmark .mark { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; font: 700 0.8125rem/1 var(--mono); color: var(--on-accent); background: var(--accent); }
+    .btn { display: inline-block; font: 700 0.9375rem/1 var(--font); text-decoration: none; padding: 10px 18px; border-radius: var(--r-int); border: 1px solid transparent; cursor: pointer; white-space: nowrap; transition: background 180ms var(--ease), color 180ms var(--ease); }
+    .btn-primary { background: var(--accent); color: var(--on-accent); }
+    .btn-primary:hover { background: var(--accent-ink); color: var(--on-accent); }
+
+    .wrap { max-width: 780px; margin: 0 auto; padding: 48px 24px 40px; }
+    .head h1 { margin: 0 0 12px; font-weight: 900; font-size: clamp(2rem, 4.4vw, 2.75rem); line-height: 1.06; letter-spacing: -0.025em; }
+    .head p { margin: 0 0 8px; color: var(--muted); font-size: 1.0625rem; max-width: 58ch; }
+
+    .posts { display: grid; gap: 16px; margin-top: 40px; }
+    .post {
+      display: block; padding: 26px 28px;
+      background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-card);
+      transition: border-color 180ms var(--ease), transform 120ms var(--ease);
+    }
+    .post:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--hairline)); }
+    .post .tag { display: inline-block; font: 700 0.6875rem/1 var(--mono); letter-spacing: 0.04em; color: var(--accent-text); background: var(--accent-tint); padding: 5px 8px; border-radius: var(--r-chip); margin-bottom: 12px; }
+    .post h2 { margin: 0 0 8px; font-weight: 900; font-size: 1.3125rem; line-height: 1.25; letter-spacing: -0.015em; color: var(--ink); }
+    .post p { margin: 0; color: var(--muted); font-size: 0.9375rem; }
+    .post .more { display: inline-block; margin-top: 12px; font-weight: 700; font-size: 0.9375rem; color: var(--accent-text); }
+
+    table.compare { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 0.9375rem; }
+    table.compare th, table.compare td { text-align: left; padding: 12px 14px; border: 1px solid var(--hairline); vertical-align: top; }
+    table.compare th { background: var(--accent-tint); font-weight: 700; }
+    table.compare tr.you td { background: color-mix(in srgb, var(--accent) 6%, var(--surface)); }
+
+    .steps { margin: 24px 0; padding-left: 0; list-style: none; counter-reset: step; }
+    .steps li { counter-increment: step; margin: 0 0 18px; padding-left: 44px; position: relative; }
+    .steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--accent-tint); color: var(--accent-text); font: 700 0.9375rem/30px var(--mono); text-align: center; }
+
+    .checklist-body ul { padding-left: 22px; }
+    .checklist-body li { margin: 0 0 10px; }
+    .checklist-body h2 { margin: 32px 0 12px; font-weight: 900; font-size: 1.375rem; letter-spacing: -0.015em; }
+
+    .form-slot { margin: 28px 0; padding: 22px; border: 1px dashed var(--hairline); border-radius: var(--r-card); color: var(--muted); font-size: 0.9375rem; }
+
+    footer {
+      color: var(--muted); font-size: 0.8125rem; padding: 40px 24px 56px;
+      border-top: 1px solid var(--hairline); text-align: center; margin-top: 56px;
+    }
+    footer p { margin: 6px 0; }
+    footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    footer a:hover { color: var(--accent-text); }
+
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-in">
+      <a class="wordmark" href="../index.html"><span class="mark">S</span>StockyLift</a>
+      <a class="btn btn-primary" href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <div class="head">
+      <h1>How to move your Stocky data to Sumtracker</h1>
+      <p>Sumtracker is subscription (recurring monthly/annual plans): An inventory, bundling, and purchase-order management platform for Shopify and multi-channel sellers, billed as an ongoing subscription.</p>
+    </div>
+
+    <ol class="steps">
+      <li><strong>Export your Stocky suppliers with StockyLift.</strong> Paste your Stocky API key into the extension, run the export, and download a CSV (or JSON backup) of your full supplier list &mdash; the export stocky suppliers button Stocky itself never had. <a href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift &rarr;</a></li>
+      <li><strong>Check what the CSV contains.</strong> The Generic CSV preset includes all 18 supplier fields Stocky's API exposes (name, contact, email, phone, address, currency, payment terms, tax number, notes, status, lead time, and more) plus your purchase-order export.</li>
+      <li><strong>Import into Sumtracker.</strong> Sign in to Sumtracker, locate its supplier or purchase-order import tool (usually under Settings &rarr; Import, or a Suppliers/Purchasing section), and upload the exported file. Consult Sumtracker's own help center for its current import template &mdash; field names vary between apps, so map columns before a large import. <a href="https://apps.shopify.com/search?q=Sumtracker" rel="nofollow">Find Sumtracker on the Shopify App Store &rarr;</a></li>
+      <li><strong>Reconcile the count.</strong> Confirm the number of suppliers imported into Sumtracker matches the number exported from Stocky, then keep your original CSV/JSON files as a permanent backup.</li>
+    </ol>
+
+    <p>Do this before August 31, 2026 &mdash; that is when Stocky's API goes offline for good (the stocky api sunset). See the full <a href="migration-checklist.html">migration checklist</a> for every deadline.</p>
+  </main>
+
+  <footer>
+    <p>StockyLift is an unofficial tool and is not affiliated with Shopify.</p>
+    <p><a href="../index.html">StockyLift</a> · <a href="index.html">Migration hub</a> · <a href="../blog/index.html">Blog</a> · <a href="../privacy.html">Privacy</a> · <a href="mailto:stockylift@pm.me">stockylift@pm.me</a></p>
+  </footer>
+</body>
+</html>

@@ -187,6 +187,9 @@
       border-bottom: 1px solid var(--hairline);
     }
     .nav-in { height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-links { display: inline-flex; align-items: center; gap: 18px; }
+    .navlink { font-weight: 600; font-size: 0.9375rem; color: var(--ink); opacity: 0.75; }
+    .navlink:hover { opacity: 1; color: var(--ink); }
     .wordmark {
       display: inline-flex; align-items: center; gap: 10px;
       font-weight: 900; font-size: 1.0625rem; letter-spacing: -0.01em; color: var(--ink);
@@ -609,7 +612,10 @@
   <nav>
     <div class="wrap nav-in">
       <a class="wordmark" href="#top"><span class="mark">S</span>StockyLift</a>
-      <a class="btn btn-primary" href="#pricing">Get StockyLift</a>
+      <div class="nav-links">
+        <a class="navlink" href="migrate/index.html">Migrate off Stocky</a>
+        <a class="btn btn-primary" href="#pricing">Get StockyLift</a>
+      </div>
     </div>
   </nav>
 
@@ -624,6 +630,7 @@
           <a class="btn btn-ghost" href="#how">See how it works</a>
         </div>
         <p class="micro rise">$39 once. No subscription, no account, nothing leaves your browser.</p>
+        <p class="micro rise">Moving to Prediko, Inventory Planner, Genie, or Sumtracker? <a href="migrate/index.html">See the full migration guide &rarr;</a></p>
       </div>
 
       <div class="demo-col">

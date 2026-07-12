@@ -1,0 +1,45 @@
+STOCKY MIGRATION CHECKLIST
+===========================
+Stocky is shutting down. Shopify delisted it from the App Store on Feb 2, 2026. The app and its
+API stop working entirely on August 31, 2026. This checklist gets you out before that date.
+
+DEADLINES
+---------
+- Feb 2, 2026:      Stocky delisted from the Shopify App Store. No new installs.
+- Now - Aug 2026:   Stocky still works for existing users. Export everything you can.
+- Aug 31, 2026:     Stocky and its API stop working entirely. Hard deadline.
+- Sep - ~Nov 2026:  Shopify has said read-only export access continues ~90 days after shutdown.
+                    Treat this as a safety net only, not a plan.
+
+WHAT YOU CAN EXPORT NATIVELY FROM STOCKY
+-----------------------------------------
+- Purchase orders (CSV, via the Stocky dashboard)
+- Stocktakes (CSV, via the Stocky dashboard)
+- Product & inventory levels (via Shopify admin export)
+
+WHAT STOCKY HAS NO EXPORT BUTTON FOR
+-------------------------------------
+- Suppliers. There is no export button in the Stocky UI for supplier records. This is the data
+  most merchants lose if they don't act before the API sunset.
+
+THE 10-STEP CHECKLIST
+----------------------
+[ ] 1. Export all purchase orders from Stocky (Purchase Orders -> export to CSV). Back up the file.
+[ ] 2. Export all stocktakes from Stocky (Stocktakes -> export).
+[ ] 3. Export your product and inventory data from Shopify admin (Products -> Export, Inventory -> Export).
+[ ] 4. Export your supplier list. Stocky has no supplier export button — use StockyLift or the
+       Stocky supplier API directly. This is the step most merchants miss.
+[ ] 5. Choose your replacement inventory app. Trial at least two; confirm supplier import support.
+[ ] 6. Map your exported supplier fields to the destination app's import template.
+[ ] 7. Run a test import of 3-5 suppliers first. Verify names, emails, and addresses land correctly.
+[ ] 8. Run the full supplier import. Reconcile the imported count against your export.
+[ ] 9. Recreate any open purchase orders in your new app (Shopify does not import historical POs).
+[ ] 10. Store your exported CSV and JSON files permanently, in at least two locations.
+
+BOTTOM LINE
+-----------
+Treat August 31, 2026 as the hard deadline. The ~90-day read-only window afterward is insurance,
+not a plan.
+
+---
+StockyLift is an unofficial tool and is not affiliated with Shopify.
