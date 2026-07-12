@@ -112,6 +112,130 @@
     <div class="form-slot">
       <p>Want this as a PDF/email reminder as the Aug 31 deadline gets closer?</p>
       <!-- BREVO_FORM_SLOT -->
+<!--
+  StockyLift email capture form fragment.
+  Drop this into the migration hub page's <!-- BREVO_FORM_SLOT --> placeholder.
+
+  BREVO_FORM_ACTION: wired to the live Brevo "StockyLift checklist" double opt-in form
+  (Contacts > Forms), attached to the "StockyLift" list. The action URL below is the
+  hosted sibforms.com form endpoint from the form's Share > Simple HTML embed.
+  NOTE: the double opt-in confirmation email currently sends from the account's verified
+  sender (jothanjames237@gmail.com), NOT stockylift@pm.me — verify/replace that sender in
+  Brevo if the pm.me address is required to match the on-page microcopy.
+-->
+<form
+  class="stockylift-capture-form"
+  action="https://c7e530de.sibforms.com/serve/MUIFAF_WOHEZXPSCZTvsmYqKrjzdv7NVVXhwI3yBpcXUqlSUWOmmvCX2vEo4fwvuxQ9HI1y9IqKhw9fFkgmcS6OSi0lUCx5fkj6HfF-OmocVopnI1Xct0Nol2N3ozWQDtwCKX53p8kfcQ4kIO3HaTPnSnIZ6NbmR2kWRt3q6kFzpFCSG9AFklsYBxggnaa5DRfwaa_VBC8qnfLgeKA=="
+  method="POST"
+  data-brevo-form
+>
+  <style>
+    .stockylift-capture-form {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px;
+      border-radius: var(--r-card, 14px);
+      border: 1px solid var(--hairline, #e4e7eb);
+      background: var(--surface, #ffffff);
+      font-family: var(--font, "Satoshi", system-ui, -apple-system, "Segoe UI", sans-serif);
+      color: var(--ink, #16181d);
+    }
+    .stockylift-capture-form h3 {
+      margin: 0 0 4px;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .stockylift-capture-form p.microcopy {
+      margin: 0 0 16px;
+      color: var(--muted, #4b5158);
+      font-size: 0.9rem;
+    }
+    .stockylift-capture-form label.email-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .stockylift-capture-form input[type="email"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: var(--r-int, 10px);
+      border: 1px solid var(--hairline, #e4e7eb);
+      background: var(--bg, #fafbfc);
+      color: var(--ink, #16181d);
+      font-size: 1rem;
+      box-sizing: border-box;
+      margin-bottom: 14px;
+    }
+    .stockylift-capture-form .consent-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .stockylift-capture-form .consent-row input[type="checkbox"] {
+      margin-top: 3px;
+      flex: 0 0 auto;
+    }
+    .stockylift-capture-form .consent-row label {
+      font-size: 0.8rem;
+      color: var(--muted, #4b5158);
+      line-height: 1.4;
+    }
+    .stockylift-capture-form button[type="submit"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: none;
+      border-radius: var(--r-int, 10px);
+      background: var(--accent, #2742e8);
+      color: var(--on-accent, #ffffff);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .stockylift-capture-form .sender-note {
+      margin: 12px 0 0;
+      font-size: 0.75rem;
+      color: var(--muted, #4b5158);
+      text-align: center;
+    }
+  </style>
+
+  <h3>Get the free Stocky Migration Checklist</h3>
+  <p class="microcopy">
+    Delivered instantly, then a short deadline-aware series about the Aug 31, 2026 Stocky shutdown.
+    No spam. Unsubscribe anytime.
+  </p>
+
+  <label class="email-label" for="stockylift-capture-email">Email address</label>
+  <input
+    id="stockylift-capture-email"
+    name="EMAIL"
+    type="email"
+    placeholder="you@yourstore.com"
+    required
+  />
+
+  <div class="consent-row">
+    <input id="stockylift-capture-consent" name="OPT_IN" type="checkbox" required />
+    <label for="stockylift-capture-consent">
+      I agree to receive emails from StockyLift about the Stocky migration checklist and related
+      updates. This uses a <strong>double opt-in</strong> process: you'll get one confirmation
+      email first, and nothing else is sent until you confirm. Your data is processed under GDPR;
+      you can unsubscribe from any email or request deletion anytime by replying to any message or
+      writing to stockylift@pm.me. See the
+      <a href="../privacy.html">privacy policy</a> for details.
+    </label>
+  </div>
+
+  <button type="submit">Send me the checklist</button>
+
+  <p class="sender-note">
+    Emails come from stockylift@pm.me &middot; StockyLift is an unofficial tool, not affiliated
+    with Shopify.
+  </p>
+</form>
 
       <p>No signup required &mdash; you can also <a href="stocky-migration-checklist.txt">download the plain-text checklist directly</a>.</p>
     </div>
