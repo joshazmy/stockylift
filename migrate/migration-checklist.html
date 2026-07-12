@@ -119,9 +119,14 @@
   BREVO_FORM_ACTION: wired to the live Brevo "StockyLift checklist" double opt-in form
   (Contacts > Forms), attached to the "StockyLift" list. The action URL below is the
   hosted sibforms.com form endpoint from the form's Share > Simple HTML embed.
-  NOTE: the double opt-in confirmation email currently sends from the account's verified
-  sender (jothanjames237@gmail.com), NOT stockylift@pm.me — verify/replace that sender in
-  Brevo if the pm.me address is required to match the on-page microcopy.
+  NOTE: the double opt-in confirmation email sends from the account's verified sender
+  "StockyLift" (a freemail Gmail address configured in Brevo, routed through our email provider).
+  stockylift@pm.me cannot be a Brevo sender — it is Proton's domain and we have no DNS access to
+  authenticate it. The confirmation email's reply-to is set to stockylift@pm.me, and
+  stockylift@pm.me remains the public support/contact address. So the on-page microcopy must say
+  "sent by StockyLift via our email provider; replies go to stockylift@pm.me" — never "sent from
+  stockylift@pm.me". (This comment ships into the public page source, so it deliberately omits the
+  raw sender address.)
 -->
 <form
   class="stockylift-capture-form"
@@ -232,8 +237,8 @@
   <button type="submit">Send me the checklist</button>
 
   <p class="sender-note">
-    Emails come from stockylift@pm.me &middot; StockyLift is an unofficial tool, not affiliated
-    with Shopify.
+    Emails are sent by StockyLift via our email provider; replies go to stockylift@pm.me
+    &middot; StockyLift is an unofficial tool, not affiliated with Shopify.
   </p>
 </form>
 
