@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Move your Stocky data to Sumtracker · StockyLift</title>
-  <meta name="description" content="Step-by-step: export stocky suppliers and purchase orders with StockyLift, then import the CSV into Sumtracker before the stocky api sunset on Aug 31, 2026." />
+  <meta name="description" content="Step-by-step: export Stocky suppliers with StockyLift, export purchase orders separately in Stocky, then prepare files for Sumtracker before Aug 31, 2026." />
   <link rel="canonical" href="https://stockylift.pages.dev/migrate/migrate-to-sumtracker.html" />
   <meta property="og:title" content="Move your Stocky data to Sumtracker · StockyLift" />
-  <meta property="og:description" content="Step-by-step: export stocky suppliers and purchase orders with StockyLift, then import the CSV into Sumtracker before the stocky api sunset on Aug 31, 2026." />
+  <meta property="og:description" content="Step-by-step: export Stocky suppliers with StockyLift, export purchase orders separately in Stocky, then prepare files for Sumtracker before Aug 31, 2026." />
   <meta property="og:type" content="website" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232742e8'/%3E%3Ctext x='32' y='43' font-family='monospace' font-size='34' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
   <style>
@@ -111,8 +111,9 @@
 
     <ol class="steps">
       <li><strong>Export your Stocky suppliers with StockyLift.</strong> Paste your Stocky API key into the extension, run the export, and download a CSV (or JSON backup) of your full supplier list &mdash; the export stocky suppliers button Stocky itself never had. <a href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift &rarr;</a></li>
-      <li><strong>Check what the CSV contains.</strong> The Generic CSV preset includes all 18 supplier fields Stocky's API exposes (name, contact, email, phone, address, currency, payment terms, tax number, notes, status, lead time, and more) plus your purchase-order export.</li>
-      <li><strong>Import into Sumtracker.</strong> Sign in to Sumtracker, locate its supplier or purchase-order import tool (usually under Settings &rarr; Import, or a Suppliers/Purchasing section), and upload the exported file. Consult Sumtracker's own help center for its current import template &mdash; field names vary between apps, so map columns before a large import. <a href="https://apps.shopify.com/search?q=Sumtracker" rel="nofollow">Find Sumtracker on the Shopify App Store &rarr;</a></li>
+      <li><strong>Export purchase orders separately.</strong> In Stocky, open Purchase Orders and use Stocky's own CSV export. StockyLift exports suppliers only.</li>
+      <li><strong>Check what the supplier CSV contains.</strong> The guaranteed Generic CSV includes all 18 supplier fields Stocky's API exposes. Destination presets are beta, so compare headers with the destination's current template before a large import.</li>
+      <li><strong>Import into Sumtracker.</strong> Sign in to Sumtracker, locate its supplier import tool, and upload a small test file first. Consult Sumtracker's current help center because field names and import support change. <a href="https://apps.shopify.com/search?q=Sumtracker" rel="nofollow">Find Sumtracker on the Shopify App Store &rarr;</a></li>
       <li><strong>Reconcile the count.</strong> Confirm the number of suppliers imported into Sumtracker matches the number exported from Stocky, then keep your original CSV/JSON files as a permanent backup.</li>
     </ol>
 
@@ -120,7 +121,7 @@
   </main>
 
   <footer>
-    <p>StockyLift is an unofficial tool and is not affiliated with Shopify.</p>
+    <p>StockyLift is an independent, unofficial tool and is not affiliated with or endorsed by Shopify or Stocky.</p>
     <p><a href="../index.html">StockyLift</a> · <a href="index.html">Migration hub</a> · <a href="../blog/index.html">Blog</a> · <a href="../privacy.html">Privacy</a> · <a href="mailto:stockylift@pm.me">stockylift@pm.me</a></p>
   </footer>
 </body>

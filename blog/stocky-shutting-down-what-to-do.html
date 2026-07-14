@@ -169,7 +169,7 @@
     <p>Options to extract your supplier data before the API shutdown:</p>
     <ol>
       <li><strong>Manual transcription.</strong> Open Stocky, copy each supplier field by hand. Works for small lists. Tedious and error-prone for large ones.</li>
-      <li><strong>StockyLift.</strong> (Full disclosure: I built this tool.) An unofficial Chrome extension, not affiliated with Shopify. You paste your own Stocky API key. The extension fetches your supplier list via Stocky's official read-only API endpoint <code>GET /api/v2/suppliers.json</code>. Data stays entirely in your browser. No servers, no data collection. Exports to generic CSV and JSON, plus preset formats for Prediko, Inventory Planner, and Genie (presets currently in beta). Free preview shows supplier count and first three rows before payment. $39 at launch, $59 from August 10. Concierge done-for-you service available at $149. Full refund if StockyLift cannot export your suppliers cleanly.</li>
+      <li><strong>StockyLift.</strong> (Full disclosure: I built this tool.) An independent Chrome extension, not affiliated with or endorsed by Shopify or Stocky. It exports suppliers only through Stocky's read-only API. The API key and records stay in your browser, and you get portable Generic CSV/JSON plus beta destination presets. Free server-side and destination-specific alternatives also exist; StockyLift costs $19 one-time for the local-only, destination-independent path. The free preview shows supplier count and three rows, and a full refund applies if StockyLift cannot export suppliers cleanly. Concierge is $149 for one store and up to 60 minutes; the merchant operates locally and never shares credentials, admin screenshots, or supplier files.</li>
     </ol>
     <p>For a step-by-step walkthrough of both the manual API route and the packaged option, read <a href="export-stocky-suppliers.html">how to export suppliers from Stocky before the shutdown</a>.</p>
 
@@ -181,7 +181,7 @@
     <h3>Is my data gone after August 31, 2026?</h3>
     <p>Not immediately. Shopify provides read-only access for at least 90 days after August 31. You can view data but cannot run operations. Export everything you need before the deadline to avoid working under pressure during the read-only window.</p>
     <h3>What is StockyLift and is it affiliated with Shopify?</h3>
-    <p>No. StockyLift is an unofficial Chrome extension built by an independent developer (me). It is not affiliated with, endorsed by, or connected to Shopify. You provide your own Stocky API key. All data processing happens locally in your browser. The supplier export button Stocky never had: 2 minutes, $39, your data never leaves your browser.</p>
+    <p>No. StockyLift is an independent Chrome extension built by me. It is not affiliated with, endorsed by, or connected to Shopify or Stocky. You provide your own Stocky API key locally. The supplier export button Stocky never had: about 2 minutes, $19 one-time, with portable CSV/JSON saved on your machine.</p>
 
     <div class="related">
       <b>Keep reading</b>

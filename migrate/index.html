@@ -106,11 +106,11 @@
   <main class="wrap">
     <div class="head">
       <h1>Migrating off Stocky? Start here.</h1>
-      <p>Shopify's Stocky shuts down &mdash; app and API &mdash; on August 31, 2026. This hub covers how to export stocky suppliers and purchase orders before the stocky api sunset, how StockyLift compares to the full inventory-planning apps merchants move to, and step-by-step guides for importing your data into each one.</p>
+      <p>Shopify's Stocky shuts down &mdash; app and API &mdash; on August 31, 2026. This hub covers how StockyLift exports suppliers locally, how to export purchase orders separately through Stocky's own UI, and how to prepare those files for the inventory-planning apps merchants move to.</p>
     </div>
 
     <h2>StockyLift vs. the inventory-planning apps</h2>
-    <p>StockyLift is not trying to be Prediko, Inventory Planner, Genie, or Sumtracker. It is the tool that gets your Stocky supplier and PO data <em>out</em>, in a form those apps can import. Here is how they actually compare:</p>
+    <p>StockyLift is not trying to be Prediko, Inventory Planner, Genie, or Sumtracker. It creates a portable supplier backup while Stocky remains available. Free server-side or destination-specific tools may be the better choice if their data flow and destination fit your needs.</p>
       <table class="compare">
         <thead>
           <tr><th>Tool</th><th>Pricing model</th><th>What it is</th><th>Learn more</th></tr>
@@ -118,8 +118,8 @@
         <tbody>
           <tr class="you">
             <td>StockyLift</td>
-            <td>One-time $39 (export tool, not a subscription)</td>
-            <td>A Chrome extension that exports your Stocky supplier &amp; purchase-order data to CSV/JSON before the Aug 31, 2026 API sunset &mdash; the escape hatch out of Stocky, not a replacement inventory system.</td>
+            <td>One-time $19 (export tool, not a subscription)</td>
+            <td>A local-only Chrome extension that exports your Stocky suppliers to portable CSV/JSON before the Aug 31, 2026 API sunset &mdash; an independent backup tool, not a replacement inventory system.</td>
             <td><a href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift &rarr;</a></td>
           </tr>
         <tr>
@@ -154,25 +154,25 @@
         <a class="post" href="migrate-to-prediko.html">
           <span class="tag mono">GUIDE</span>
           <h2>How to move your Stocky data to Prediko</h2>
-          <p>Export with StockyLift, then import your supplier &amp; PO CSV into Prediko.</p>
+          <p>Export suppliers with StockyLift, export purchase orders separately in Stocky, then evaluate imports into Prediko.</p>
           <span class="more">Read the guide &rarr;</span>
         </a>
         <a class="post" href="migrate-to-inventory-planner.html">
           <span class="tag mono">GUIDE</span>
           <h2>How to move your Stocky data to Inventory Planner</h2>
-          <p>Export with StockyLift, then import your supplier &amp; PO CSV into Inventory Planner.</p>
+          <p>Export suppliers with StockyLift, export purchase orders separately in Stocky, then evaluate imports into Inventory Planner.</p>
           <span class="more">Read the guide &rarr;</span>
         </a>
         <a class="post" href="migrate-to-genie.html">
           <span class="tag mono">GUIDE</span>
           <h2>How to move your Stocky data to Genie</h2>
-          <p>Export with StockyLift, then import your supplier &amp; PO CSV into Genie.</p>
+          <p>Export suppliers with StockyLift, export purchase orders separately in Stocky, then evaluate imports into Genie.</p>
           <span class="more">Read the guide &rarr;</span>
         </a>
         <a class="post" href="migrate-to-sumtracker.html">
           <span class="tag mono">GUIDE</span>
           <h2>How to move your Stocky data to Sumtracker</h2>
-          <p>Export with StockyLift, then import your supplier &amp; PO CSV into Sumtracker.</p>
+          <p>Export suppliers with StockyLift, export purchase orders separately in Stocky, then evaluate imports into Sumtracker.</p>
           <span class="more">Read the guide &rarr;</span>
         </a>
     </div>
@@ -208,7 +208,7 @@
   </main>
 
   <footer>
-    <p>StockyLift is an unofficial tool and is not affiliated with Shopify.</p>
+    <p>StockyLift is an independent, unofficial tool and is not affiliated with or endorsed by Shopify or Stocky.</p>
     <p><a href="../index.html">StockyLift</a> · <a href="index.html">Migration hub</a> · <a href="../blog/index.html">Blog</a> · <a href="../privacy.html">Privacy</a> · <a href="mailto:stockylift@pm.me">stockylift@pm.me</a></p>
   </footer>
 </body>
