@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://joshazmy.github.io/stockylift/sitemap.xml
+Sitemap: https://stockylift.pages.dev/sitemap.xml
