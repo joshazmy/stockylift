@@ -1,0 +1,3 @@
+﻿id,name,company_name,account_number,contact_name,contact_email,address1,address2,city,province_code,country_name,zip,phone,phone_toll_free,fax,is_hidden,created_at,updated_at
+1001,Northwind Textiles,"Northwind Textiles, Ltd.",NW-1001,Avery Morgan,orders@northwind.example,12 Example Road,Suite 4,Portland,OR,United States,97205,+1 503 555 0101,+1 800 555 0101,+1 503 555 0199,false,2025-01-15T14:30:00Z,2026-07-01T09:15:00Z
+1002,Harbor & Pine Ceramics,Harbor & Pine Ceramics,HP-2048,Jordan Lee,hello@harborpine.example,88 Sample Avenue,Unit 2,Vancouver,BC,Canada,V6B 1A1,+1 604 555 0102,+1 888 555 0102,+1 604 555 0198,false,2025-03-20T18:45:00Z,2026-07-02T11:00:00Z
