@@ -112,7 +112,14 @@
     <div class="form-slot">
       <p>Want this as a PDF/email reminder as the Aug 31 deadline gets closer?</p>
       <!-- BREVO_FORM_SLOT -->
-
+<!--
+  StockyLift email capture form fragment, injected into the BREVO_FORM_SLOT placeholder
+  by build-hub.js. This comment ships into the public page: keep it short, never nest
+  another comment inside it, and never mention sender/config internals here — full notes
+  live in marketing/email/README-capture-form.md. Fixed 2026-07-19: hidden
+  email_address_check + locale fields and the AJAX submit handler below are REQUIRED for
+  Brevo to accept the post; removing them silently breaks the funnel.
+-->
 <form
   class="stockylift-capture-form"
   action="https://c7e530de.sibforms.com/serve/MUIFAF_WOHEZXPSCZTvsmYqKrjzdv7NVVXhwI3yBpcXUqlSUWOmmvCX2vEo4fwvuxQ9HI1y9IqKhw9fFkgmcS6OSi0lUCx5fkj6HfF-OmocVopnI1Xct0Nol2N3ozWQDtwCKX53p8kfcQ4kIO3HaTPnSnIZ6NbmR2kWRt3q6kFzpFCSG9AFklsYBxggnaa5DRfwaa_VBC8qnfLgeKA=="
@@ -228,14 +235,13 @@
     &middot; StockyLift is an unofficial tool, not affiliated with Shopify.
   </p>
 </form>
-
 <script>
   document.querySelector("[data-brevo-form]").addEventListener("submit", async (event) => {
     event.preventDefault();
     const form = event.target;
     const button = form.querySelector('button[type="submit"]');
     button.disabled = true;
-    button.textContent = "Sending\u2026";
+    button.textContent = "Sending…";
     try {
       const response = await fetch(form.action, { method: "POST", body: new FormData(form) });
       const data = await response.json();
@@ -249,7 +255,7 @@
       button.textContent = "Send me the checklist";
       form.insertAdjacentHTML(
         "beforeend",
-        '<p class="microcopy" role="alert">Something went wrong \u2014 please try again, or just use the direct download link below.</p>'
+        '<p class="microcopy" role="alert">Something went wrong — please try again, or just use the direct download link below.</p>'
       );
     }
   });
