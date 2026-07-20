@@ -226,15 +226,13 @@
     <input id="stockylift-capture-consent" name="OPT_IN" type="checkbox" required />
     <label for="stockylift-capture-consent">
       I agree to receive emails from StockyLift about the Stocky migration checklist and related
-      updates. Your data is processed under GDPR;
+      updates. This uses a <strong>double opt-in</strong> process: you'll get one confirmation
+      email first, and nothing else is sent until you confirm. Your data is processed under GDPR;
       you can unsubscribe from any email or request deletion anytime by replying to any message or
       writing to stockylift@pm.me. See the
       <a href="../privacy.html">privacy policy</a> for details.
     </label>
   </div>
-
-  <input type="text" name="email_address_check" value="" style="display:none" aria-hidden="true" tabindex="-1" autocomplete="off" />
-  <input type="hidden" name="locale" value="en" />
 
   <button type="submit">Send me the checklist</button>
 
@@ -243,32 +241,6 @@
     &middot; StockyLift is an unofficial tool, not affiliated with Shopify.
   </p>
 </form>
-
-<script>
-  document.querySelector("[data-brevo-form]").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const button = form.querySelector('button[type="submit"]');
-    button.disabled = true;
-    button.textContent = "Sending\u2026";
-    try {
-      const response = await fetch(form.action, { method: "POST", body: new FormData(form) });
-      const data = await response.json();
-      if (!data.success) throw new Error("rejected");
-      form.innerHTML =
-        '<p class="microcopy" role="status"><strong>You are on the list.</strong> ' +
-        'The full 10-step checklist is right below on this page, and the plain-text version is ' +
-        '<a href="stocky-migration-checklist.txt">available here</a>.</p>';
-    } catch (error) {
-      button.disabled = false;
-      button.textContent = "Send me the checklist";
-      form.insertAdjacentHTML(
-        "beforeend",
-        '<p class="microcopy" role="alert">Something went wrong \u2014 please try again, or just use the direct download link below.</p>'
-      );
-    }
-  });
-</script>
 
       <p>No signup required &mdash; you can also <a href="stocky-migration-checklist.txt">download the plain-text checklist directly</a>.</p>
     </div>
