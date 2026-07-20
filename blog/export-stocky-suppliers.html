@@ -159,10 +159,20 @@
       <li>The extension calls <code>GET /api/v2/suppliers.json</code> through Stocky's official read-only API, entirely in your browser.</li>
       <li>Your supplier list renders on screen. No data leaves your browser. No servers involved.</li>
       <li>Free preview shows supplier count plus the first 3 rows before you pay anything.</li>
-      <li>Exports include generic CSV (guaranteed) and JSON. Prediko, Inventory Planner, and Genie presets are currently labeled BETA because they have not been byte-verified against those apps' real import templates yet.</li>
+      <li>Exports include generic CSV (guaranteed) and JSON, plus Prediko, Inventory Planner, and Genie presets (beta — compare a preset's headers with your destination's current import template before a large import).</li>
     </ul>
     <p>Pricing: $19 one-time. Free server-side and destination-specific alternatives also exist; StockyLift is the local-only option for portable supplier files. Concierge is $149 for one store, one supervised export session, one destination-readiness check, and up to 60 minutes. You operate locally; we never ask for your API key, Shopify login, admin screenshots, or supplier files.</p>
     <p>Refund policy: full refund if StockyLift cannot export your suppliers cleanly.</p>
+
+    <h2>How the options compare on API-key handling</h2>
+    <p>Whichever route you pick, the thing to check is where your Stocky API key travels. That key grants read access to your supplier records, so its path matters:</p>
+    <table>
+      <tr><th>Route</th><th>Where your API key goes</th><th>Where the export is processed</th></tr>
+      <tr><td>Manual API call</td><td>Your own terminal or script</td><td>Your machine</td></tr>
+      <tr><td>Free server-side exporters</td><td>Submitted to the tool's server</td><td>Their server (check each tool's own data-handling statement)</td></tr>
+      <tr><td>StockyLift</td><td>Stays in your browser — one authenticated request goes straight to Stocky</td><td>Your browser, locally</td></tr>
+    </table>
+    <p>Server-side tools can be perfectly legitimate — some state they don't store your key or data. The difference is verifiability: with a browser-local extension, no third-party server is in the path at all.</p>
     <p>It is the supplier export button Stocky never had. Two minutes, $19, and nothing is uploaded to a StockyLift server.</p>
 
     <h2>FAQ</h2>
