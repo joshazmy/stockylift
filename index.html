@@ -357,6 +357,24 @@
 
     /* Situation: full-width statement band */
     .situation { background: var(--surface); border-bottom: 1px solid var(--hairline); }
+
+    /* --- explainer video --- */
+    .explain { border-bottom: 1px solid var(--hairline); }
+    .explain .sub { margin-bottom: 32px; }
+    .vidwrap {
+      max-width: 880px; border: 1px solid var(--hairline); border-radius: 14px;
+      overflow: hidden; background: var(--surface); line-height: 0;
+      box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 12px 32px -12px rgba(16,24,40,.12);
+    }
+    .vidwrap video { width: 100%; height: auto; display: block; }
+    .vidnote { margin: 14px 0 0; }
+    /* The clip is a light-background diagram. In dark mode, frame it in its own
+       light surface so the brightness reads as a deliberate media card rather
+       than a blown-out rectangle. */
+    @media (prefers-color-scheme: dark) {
+      .vidwrap { background: #f7f8fa; padding: 10px; border-color: #2f3138; }
+      .vidwrap video { border-radius: 6px; }
+    }
     .situation h2 { max-width: 24ch; font-size: clamp(1.875rem, 3.4vw, 2.75rem); margin-bottom: 20px; }
     .situation .sub { margin-bottom: 56px; }
     .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
@@ -668,6 +686,27 @@
       </div>
     </div>
   </header>
+
+  <section class="explain">
+    <div class="wrap">
+      <h2 data-reveal>What it actually does</h2>
+      <p class="sub" data-reveal style="--i:1">Twenty-seven seconds, no narration required.</p>
+      <div class="vidwrap" data-reveal style="--i:2">
+        <video
+          id="explainVid"
+          width="1280" height="720"
+          poster="video-poster.jpg"
+          preload="none"
+          controls playsinline muted loop
+          aria-label="Animated diagram: data moves read-only from the Stocky API through the StockyLift extension in your browser, out to CSV and JSON files you keep.">
+          <source src="stockylift-27s.mp4" type="video/mp4" />
+          <p>Your browser can't play this video. The short version: StockyLift reads Stocky's
+          own API from inside your browser and writes your suppliers to CSV and JSON.</p>
+        </video>
+      </div>
+      <p class="micro vidnote" data-reveal style="--i:3">This is an explanatory diagram, not a screen recording of Stocky.</p>
+    </div>
+  </section>
 
   <section class="situation">
     <div class="wrap">
