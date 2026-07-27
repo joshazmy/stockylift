@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://stockylift.pages.dev/sitemap.xml
+Sitemap: https://stockylift.com/sitemap.xml

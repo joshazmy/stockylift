@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Export Suppliers from Stocky Before Aug 31 · StockyLift</title>
   <meta name="description" content="Stocky is shutting down Aug 31, 2026 and has no supplier export button. StockyLift is a Chrome extension that exports your full Stocky supplier list to CSV for Prediko, Inventory Planner, Genie, or a generic import. Runs 100% in your browser." />
-  <link rel="canonical" href="https://stockylift.pages.dev/" />
+  <link rel="canonical" href="https://stockylift.com/" />
   <meta property="og:title" content="Export Suppliers from Stocky Before Aug 31 · StockyLift" />
   <meta property="og:description" content="Stocky shuts down Aug 31, 2026 and has no supplier export button. StockyLift adds one. Your full list, out to CSV, in two minutes." />
   <meta property="og:type" content="website" />
   <!-- Card source: og-card.html (re-screenshot at 1200x630 if the theme changes). -->
-  <meta property="og:image" content="https://stockylift.pages.dev/og.png" />
+  <meta property="og:image" content="https://stockylift.com/og.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="StockyLift — Stocky is closing. Your suppliers leave with you. Full supplier list to clean CSV in about two minutes." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Export Suppliers from Stocky Before Aug 31 · StockyLift" />
   <meta name="twitter:description" content="Stocky shuts down Aug 31, 2026 and has no supplier export button. StockyLift adds one. Your full list, out to CSV, in two minutes." />
-  <meta name="twitter:image" content="https://stockylift.pages.dev/og.png" />
+  <meta name="twitter:image" content="https://stockylift.com/og.png" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232742e8'/%3E%3Ctext x='32' y='43' font-family='monospace' font-size='34' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
 
   <!-- FAQPage structured data, kept in sync with the visible FAQ below. -->
@@ -63,7 +63,7 @@
         "name": "Which apps do the presets support?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The Generic CSV (every Stocky field) and the raw JSON backup are guaranteed. The Prediko, Inventory Planner, and Genie presets are in beta. Compare a preset's headers with your destination's current import template before a large import, or just use the Generic CSV, which always holds all your data."
+          "text": "The Generic CSV (every Stocky field) and the raw JSON backup are reliable and guaranteed. Prediko and Inventory Planner are beta/starter mapping layouts, so check each destination's current import template before a full import. Genie is byte-verified against Genie's published supplier template, but merchants should still run a small test import and check current Genie app behavior before a full migration. Otherwise use the Generic CSV as the portable fallback."
         }
       },
       {
@@ -807,16 +807,19 @@
           <span class="chip mono">BETA</span>
           <h3>Prediko</h3>
           <div class="filetag" aria-hidden="true"><span class="dot"></span><b>prediko-suppliers</b>.csv</div>
+          <p>Beta/starter mapping layout. Compare the header row against Prediko's current import template before importing a full file.</p>
         </div>
         <div class="cell" data-reveal style="--i:5">
           <span class="chip mono">BETA</span>
           <h3>Inventory Planner</h3>
           <div class="filetag" aria-hidden="true"><span class="dot"></span><b>ip-vendors</b>.csv</div>
+          <p>Beta/starter mapping layout. Compare the header row against Inventory Planner's current import template before importing a full file.</p>
         </div>
         <div class="cell" data-reveal style="--i:6">
-          <span class="chip mono">BETA</span>
+          <span class="chip mono">BYTE-VERIFIED</span>
           <h3>Genie</h3>
           <div class="filetag" aria-hidden="true"><span class="dot"></span><b>genie-suppliers</b>.csv</div>
+          <p>Byte-verified against Genie's published supplier template. Run a small test import/check in current Genie behavior before a full migration.</p>
         </div>
       </div>
     </div>
@@ -845,7 +848,7 @@
         <ul class="price-list">
           <li>Every supplier, no row limit</li>
           <li>Generic CSV and JSON backup, guaranteed</li>
-          <li>Prediko, Inventory Planner, and Genie presets (beta)</li>
+          <li>Prediko and Inventory Planner are beta/starter mapping layouts (check destination template rows). Genie is byte-verified against Genie's published supplier template; run a quick test import/check in your live Genie account.</li>
           <li>Free preview before you pay</li>
           <li>Updates through the shutdown</li>
         </ul>
@@ -877,7 +880,7 @@
           </details>
           <details class="qa" data-reveal>
             <summary>Which apps do the presets support?</summary>
-            <div class="ans"><p>The <strong>Generic CSV</strong> (every Stocky field) and the raw <strong>JSON backup</strong> are <strong>guaranteed</strong>. The <strong>Prediko</strong>, <strong>Inventory Planner</strong>, and <strong>Genie</strong> presets are <strong>beta</strong>. Compare a preset's headers with your destination's current import template before a large import, or just use the Generic CSV, which always holds all your data.</p></div>
+            <div class="ans"><p>The <strong>Generic CSV</strong> (every Stocky field) and the raw <strong>JSON backup</strong> are <strong>reliable and guaranteed</strong>. <strong>Prediko</strong> and <strong>Inventory Planner</strong> are beta/starter mapping layouts, so check each destination's current import template before a large import. <strong>Genie</strong> is byte-verified against Genie's published supplier template, but run a small test import/check in current Genie behavior before a full migration. Use Generic CSV as the portable fallback if you need to import into a different tool.</p></div>
           </details>
           <details class="qa" data-reveal>
             <summary>Where do I find my Stocky API key?</summary>
