@@ -640,16 +640,15 @@
   <header class="hero" id="top">
     <div class="wrap hero-grid">
       <div>
-        <p class="countdown rise" id="countdown" role="timer" aria-live="off"><span class="cd-dot"></span><span>Counting down to Aug 31, 2026</span></p>
+        <p class="countdown rise" id="countdown" role="timer" aria-live="off"><span class="cd-dot"></span><span>Stocky stops operating Aug 31. Export while its API is available.</span></p>
         <h1 class="rise"><span>Stocky shuts down</span><span>Aug 31.</span></h1>
-        <p class="lede rise">Back up your Stocky suppliers locally. Your API key and records stay in your browser, and you keep portable CSV and JSON files.</p>
+        <p class="lede rise">Stocky has no built-in supplier export. Preview your supplier count for free before you buy, then keep the full export locally as portable CSV and JSON files.</p>
         <div class="cta-row rise">
           <a class="btn btn-primary" href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a>
-          <a class="btn btn-ghost" href="#how">See how it works</a>
+          <a class="btn btn-ghost" href="https://chromewebstore.google.com/detail/stockylift/cdkchilcfepfmkmijippecmndgjbcklk">Install free from Chrome Web Store</a>
         </div>
         <p class="micro rise">$19 once. No subscription, no account, nothing uploaded to a StockyLift server.</p>
         <p class="micro rise">Free server-side and destination-specific tools also exist. Choose StockyLift when local-only, destination-independent files matter.</p>
-        <p class="micro rise"><a href="https://chromewebstore.google.com/detail/stockylift/cdkchilcfepfmkmijippecmndgjbcklk">Available in the Chrome Web Store &rarr;</a></p>
         <p class="micro rise">Moving to Prediko, Inventory Planner, Genie, or Sumtracker? <a href="migrate/index.html">See the full migration guide &rarr;</a></p>
       </div>
 
@@ -854,6 +853,8 @@
         </ul>
         <a class="btn btn-primary" href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a>
         <p class="micro">Unlock code is emailed manually within a few hours.</p>
+        <p class="micro"><a href="https://chromewebstore.google.com/detail/stockylift/cdkchilcfepfmkmijippecmndgjbcklk">Install or preview free in the Chrome Web Store &rarr;</a></p>
+        <p class="micro">Bought it? Reply to your receipt or email <a href="mailto:stockylift@pm.me">support</a> with where you found StockyLift (Shopify Community, Reddit, Google, CWS, partner, or other).</p>
         <p class="micro">If it can't export your suppliers cleanly, full refund. Reply to your receipt.</p>
         <p class="micro"><b>Concierge: $149.</b> One store, one supervised export session and destination-readiness check, up to 60 minutes. You operate locally; we never ask for your API key, Shopify login, admin screenshots, or supplier files. Extra work is quoted separately.</p>
       </div>
@@ -921,7 +922,7 @@
         var d = Math.floor(s / 86400);
         var h = Math.floor((s % 86400) / 3600);
         var m = Math.floor((s % 3600) / 60);
-        elC.innerHTML = DOT + "<span>Stocky shuts down in <b>" + d + " days " + pad(h) + "h " + pad(m) + "m</b> — after that, your supplier data is gone.</span>";
+        elC.innerHTML = DOT + "<span>Stocky shuts down in <b>" + d + " days " + pad(h) + "h " + pad(m) + "m</b> — export while the API is available.</span>";
       }
       renderCount();
       if (!REDUCE) setInterval(renderCount, 1000);
