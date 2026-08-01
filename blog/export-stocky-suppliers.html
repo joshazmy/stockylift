@@ -158,11 +158,13 @@
       <li>You paste your own Stocky API key into the extension.</li>
       <li>The extension calls <code>GET /api/v2/suppliers.json</code> through Stocky's official read-only API, entirely in your browser.</li>
       <li>Your supplier list renders on screen. No data leaves your browser. No servers involved.</li>
-      <li>Free preview shows supplier count plus the first 3 rows before you pay anything.</li>
-      <li>Exports include generic CSV (guaranteed) and JSON, plus Prediko, Inventory Planner, and Genie presets (beta — compare a preset's headers with your destination's current import template before a large import).</li>
+      <li>Free preview shows the supplier count plus the first three supplier names before you pay anything.</li>
+      <li>Generic CSV contains the 18 documented mapped fields. Raw JSON preserves the supplier array returned by Stocky's API, including extra fields not mapped into the CSV.</li>
+      <li>Prediko and Inventory Planner are beta/starter mapping layouts. Genie matches its published supplier template, but every destination should be checked with a small current test before a larger import.</li>
     </ul>
-    <p>Pricing: $19 one-time. Free server-side and destination-specific alternatives also exist; StockyLift is the local-only option for portable supplier files. Concierge is $149 for one store, one supervised export session, one destination-readiness check, and up to 60 minutes. You operate locally; we never ask for your API key, Shopify login, admin screenshots, or supplier files.</p>
-    <p>Refund policy: full refund if StockyLift cannot export your suppliers cleanly.</p>
+    <p>Pricing: $19 one-time. Free server-side and destination-specific alternatives also exist; StockyLift is the local-only option for portable supplier files. Real-store compatibility is still being verified. Text or email guidance is available, with an optional 15-minute call only on request.</p>
+    <p>Refund policy: if a buyer with current Stocky access can complete the free preview but StockyLift cannot produce usable Generic CSV and raw JSON for the stated supplier task, the buyer receives a full refund.</p>
+    <p>Merchants who need hands-on migration guidance may contact Josh to discuss a separately scoped assisted session. No destination outcome is guaranteed.</p>
 
     <h2>How the options compare on API-key handling</h2>
     <p>Whichever route you pick, the thing to check is where your Stocky API key travels. That key grants read access to your supplier records, so its path matters:</p>
@@ -170,7 +172,7 @@
       <tr><th>Route</th><th>Where your API key goes</th><th>Where the export is processed</th></tr>
       <tr><td>Manual API call</td><td>Your own terminal or script</td><td>Your machine</td></tr>
       <tr><td>Free server-side exporters</td><td>Submitted to the tool's server</td><td>Their server (check each tool's own data-handling statement)</td></tr>
-      <tr><td>StockyLift</td><td>Stays in your browser — one authenticated request goes straight to Stocky</td><td>Your browser, locally</td></tr>
+      <tr><td>StockyLift</td><td>Stays in your browser — one read-only API path pages through Stocky's supplier endpoint</td><td>Your browser, locally</td></tr>
     </table>
     <p>Server-side tools can be perfectly legitimate — some state they don't store your key or data. The difference is verifiability: with a browser-local extension, no third-party server is in the path at all.</p>
     <p>It is the supplier export button Stocky never had. Two minutes, $19, and nothing is uploaded to a StockyLift server.</p>
