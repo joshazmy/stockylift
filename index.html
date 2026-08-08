@@ -627,9 +627,16 @@
       section { padding: 72px 0; }
     }
     @media (max-width: 560px) {
+      .nav-in { padding-left: 12px; padding-right: 12px; }
+      .nav-links { gap: 8px; }
+      .navlink { font-size: 0.75rem; white-space: nowrap; }
+      nav .btn { padding-left: 12px; padding-right: 12px; }
       .bento { grid-template-columns: 1fr; }
       .cell.big { grid-column: auto; }
       .filecard { transform: translateX(8px); }
+    }
+    @media (max-width: 360px) {
+      .navlink { display: none; }
     }
   </style>
 </head>
