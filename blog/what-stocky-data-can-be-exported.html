@@ -135,7 +135,7 @@
       <tbody>
         <tr><td class="mono">Feb 2, 2026</td><td>Stocky delisted from the Shopify App Store. New installs blocked.</td></tr>
         <tr><td class="mono">Aug 31, 2026</td><td>Stocky stops working. APIs return nothing. App is non-operational.</td></tr>
-        <tr><td class="mono">At least 90 days after Aug 31</td><td>Read-only export access continues. Shopify has not confirmed an exact end date.</td></tr>
+        <tr><td class="mono">~Nov 30, 2026</td><td>Read-only export access ends. Shopify guarantees at least 90 days.</td></tr>
       </tbody>
     </table>
     <p>Shopify says merchants retain read-only access to Stocky for at least 90 days after August 31. That means your data does not vanish at midnight. But the app stops being operational the moment APIs die. You can view. You cannot act.</p>
@@ -157,7 +157,7 @@
 
     <h2>The supplier problem</h2>
     <p>This is the critical gap. Suppliers live inside Stocky with no native export path. Shopify's own documentation states there is no button to export your supplier list. When Stocky's APIs die on August 31, 2026, your supplier data becomes trapped in a read-only app that can no longer integrate with anything.</p>
-    <p>Supplier records may include names, emails, phone numbers, and addresses. StockyLift's Generic CSV maps the 18 documented supplier fields; raw JSON preserves the supplier array returned by Stocky's API, including extra fields not mapped into the CSV.</p>
+    <p>Suppliers include names, emails, phone numbers, addresses, lead times, and the product-to-supplier mappings you built over years. None of that carries into Shopify natively. The Shopify CSV upload for products cannot retain supplier links or PO history.</p>
     <p>If you do nothing, you lose operational access to your supplier network on August 31 and read-only access roughly 90 days later.</p>
 
     <h2>How to get your suppliers out</h2>
@@ -168,16 +168,15 @@
     <p class="disclosure"><strong>Disclosure:</strong> I built StockyLift, an unofficial Chrome extension that is not affiliated with Shopify. It fetches your supplier list via the Stocky API endpoint above, entirely inside your browser. Your API key never leaves your machine. No servers. No data collection.</p>
     <p>StockyLift exports:</p>
     <ul>
-      <li>Generic CSV with 18 documented mapped fields</li>
-      <li>Raw JSON preserving the supplier array returned by Stocky's API</li>
-      <li>Prediko preset (BETA/starter mapping layout)</li>
-      <li>Inventory Planner preset (BETA/starter mapping layout)</li>
-      <li>Genie layout matched to Genie's published supplier template</li>
+      <li>Generic CSV (guaranteed format)</li>
+      <li>JSON</li>
+      <li>Prediko preset (BETA)</li>
+      <li>Inventory Planner preset (BETA)</li>
+      <li>Genie preset (BETA)</li>
     </ul>
-    <p>Real-store compatibility is still being verified. Check every destination's current template and run a small test before a larger import.</p>
-    <p>The free preview shows the supplier count and first three names before payment. If a buyer with current Stocky access can complete the preview but StockyLift cannot produce usable Generic CSV and raw JSON for the stated supplier task, the buyer receives a full refund.</p>
-    <p>Pricing: $19 one-time. Free server-side and destination-specific alternatives also exist; StockyLift is the local-only, destination-independent option. Text or email guidance is available, with an optional 15-minute call only on request.</p>
-    <p>Merchants who need hands-on migration guidance may contact Josh to discuss a separately scoped assisted session. No destination outcome is guaranteed.</p>
+    <p>The BETA presets are not yet byte-verified against those apps' real import templates. Generic CSV is the reliable path. Most inventory tools accept generic CSV.</p>
+    <p>Free preview shows your supplier count and the first three rows before you pay anything. If StockyLift cannot export your suppliers cleanly, you get a full refund.</p>
+    <p>Pricing: $19 one-time. Free server-side and destination-specific alternatives also exist; StockyLift is the local-only, destination-independent option. Concierge is $149 for one store, one supervised export session, one destination-readiness check, and up to 60 minutes. The merchant operates locally; we never request an API key, Shopify login, admin screenshots, or supplier files.</p>
 
     <h2>Act before August 31</h2>
     <p>The API deadline is hard. After August 31, 2026, no tool can fetch your suppliers programmatically. The 90-day read-only window means you can still see your data, but you cannot pull it via API. Manual transcription of hundreds of suppliers is not realistic.</p>
@@ -205,7 +204,6 @@
       <h2>Suppliers are the one thing you can't export natively</h2>
       <p>StockyLift pulls your full supplier list through Stocky's own API, entirely in your browser, and writes it to clean CSV and JSON. Full refund if it can't export cleanly.</p>
       <a class="btn btn-primary" href="../index.html">See how StockyLift works</a>
-      <a class="btn btn-ghost" href="https://chromewebstore.google.com/detail/stockylift/cdkchilcfepfmkmijippecmndgjbcklk">Install free from Chrome Web Store</a>
     </div>
 
     <hr />

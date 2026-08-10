@@ -8,12 +8,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://stockylift.com/</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-07-12</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://stockylift.com/privacy.html</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-07-11</lastmod>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://stockylift.com/thanks.html</loc>
+    <lastmod>2026-07-11</lastmod>
     <priority>0.3</priority>
   </url>
 
@@ -25,17 +30,17 @@
   </url>
   <url>
     <loc>https://stockylift.com/blog/export-stocky-suppliers.html</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://stockylift.com/blog/what-stocky-data-can-be-exported.html</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://stockylift.com/blog/stocky-shutting-down-what-to-do.html</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <priority>0.6</priority>
   </url>
 

@@ -169,7 +169,7 @@
     <p>Options to extract your supplier data before the API shutdown:</p>
     <ol>
       <li><strong>Manual transcription.</strong> Open Stocky, copy each supplier field by hand. Works for small lists. Tedious and error-prone for large ones.</li>
-      <li><strong>StockyLift.</strong> (Full disclosure: I built this tool.) An independent Chrome extension, not affiliated with or endorsed by Shopify or Stocky. It exports supplier records only through Stocky's read-only API. The merchant's API key, credentials, and supplier files are not sent to a StockyLift server. Generic CSV contains the 18 documented mapped fields; raw JSON preserves the supplier array returned by Stocky's API, including extra fields not mapped into the CSV. Prediko and Inventory Planner remain beta/starter mapping layouts. Free server-side and destination-specific alternatives also exist. StockyLift costs $19 one-time; real-store compatibility is still being verified. The free preview shows the supplier count and first three names. Eligible Generic CSV/raw JSON failures receive a full refund. Text or email guidance is available, with an optional 15-minute call only on request.</li>
+      <li><strong>StockyLift.</strong> (Full disclosure: I built this tool.) An independent Chrome extension, not affiliated with or endorsed by Shopify or Stocky. It exports suppliers only through Stocky's read-only API. The API key and records stay in your browser, and you get portable Generic CSV/JSON plus beta destination presets. Free server-side and destination-specific alternatives also exist; StockyLift costs $19 one-time for the local-only, destination-independent path. The free preview shows supplier count and three rows, and a full refund applies if StockyLift cannot export suppliers cleanly. Concierge is $149 for one store and up to 60 minutes; the merchant operates locally and never shares credentials, admin screenshots, or supplier files.</li>
     </ol>
     <p>For a step-by-step walkthrough of both the manual API route and the packaged option, read <a href="export-stocky-suppliers.html">how to export suppliers from Stocky before the shutdown</a>.</p>
 
@@ -195,7 +195,6 @@
       <h2>The supplier list is the piece with no exit button</h2>
       <p>StockyLift pulls your full supplier list through Stocky's own API before it dies — entirely in your browser, to clean CSV and JSON. Full refund if it can't export cleanly.</p>
       <a class="btn btn-primary" href="../index.html">See how StockyLift works</a>
-      <a class="btn btn-ghost" href="https://chromewebstore.google.com/detail/stockylift/cdkchilcfepfmkmijippecmndgjbcklk">Install free from Chrome Web Store</a>
     </div>
 
     <hr />

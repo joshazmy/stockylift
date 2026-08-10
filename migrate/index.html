@@ -92,8 +92,6 @@
     footer p { margin: 6px 0; }
     footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
     footer a:hover { color: var(--accent-text); }
-    .btn[aria-disabled="true"] { cursor: not-allowed; opacity: 0.62; background: var(--muted); color: var(--bg); pointer-events: none; }
-    .sales-closed { margin: 16px auto 0; padding: 12px 24px; max-width: 1120px; color: var(--muted); }
 
   </style>
 </head>
@@ -101,10 +99,9 @@
   <nav>
     <div class="nav-in">
       <a class="wordmark" href="../index.html"><span class="mark">S</span>StockyLift</a>
-      <a class="btn btn-primary" data-purchase-link="https://jothan8.gumroad.com/l/dzuxm" data-closed-label="New purchases closed">Get StockyLift</a>
+      <a class="btn btn-primary" href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a>
     </div>
   </nav>
-  <p class="sales-closed" data-sales-closed-message hidden><strong>New purchases closed after August 17.</strong> Existing buyers remain supported. Installation, privacy information, documentation, and <a href="mailto:stockylift@pm.me">support</a> remain available.</p>
 
   <main class="wrap">
     <div class="head">
@@ -123,7 +120,7 @@
             <td>StockyLift</td>
             <td>One-time $19 (export tool, not a subscription)</td>
             <td>A local-only Chrome extension that exports your Stocky suppliers to portable CSV/JSON before the Aug 31, 2026 API sunset &mdash; an independent backup tool, not a replacement inventory system.</td>
-            <td><a data-purchase-link="https://jothan8.gumroad.com/l/dzuxm" data-closed-label="New purchases closed">Get StockyLift &rarr;</a></td>
+            <td><a href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift &rarr;</a></td>
           </tr>
         <tr>
           <td>Prediko</td>
@@ -167,29 +164,30 @@
         <h2>$19 self-serve</h2>
         <ul>
           <li>One store, one-time.</li>
-          <li>Supplier records only: Generic CSV contains the 18 documented mapped fields; raw JSON preserves the supplier array returned by Stocky's API, including extra fields not mapped into the CSV.</li>
-          <li>Prediko and Inventory Planner are beta/starter mapping layouts. Prediko and Inventory Planner are beta/starter mapping layouts, so their headers should be checked against each destination template before importing.  Genie is byte-verified against Genie's published supplier template, but merchants should still run a small test import and verify current Genie app behavior before full migration.</li>
-          <li>Free preview shows the supplier count and first three names.</li>
-          <li>Requires current access to your own Stocky store, your store name, and your own Stocky API key.</li>
-          <li>Credentials and supplier files are not sent to a StockyLift server.</li>
-          <li>Real-store compatibility is still being verified.</li>
-          <li>Text or email guidance is available; an optional 15-minute call is offered only on request.</li>
+          <li>Full supplier export.</li>
+          <li>Guaranteed Generic CSV and JSON: reliable outputs for your portable backup.</li>
+          <li>Destination presets are mapped for compatibility only. Prediko and Inventory Planner are beta/starter mapping layouts, so their headers should be checked against each destination template before importing.  Genie is byte-verified against Genie's published supplier template, but merchants should still run a small test import and verify current Genie app behavior before full migration. Generic CSV and JSON are the guaranteed fallback.</li>
+          <li>Free preview.</li>
           <li>Manual unlock delivery within a few hours.</li>
-          <li>Eligible Generic CSV/raw JSON failures receive a full refund under the stated policy.</li>
           <li>Downloadable samples: <a download href="../sample-suppliers.csv">sample-suppliers.csv</a> and <a download href="../sample-suppliers.json">sample-suppliers.json</a>.</li>
         </ul>
-        <a class="more" data-purchase-link="https://jothan8.gumroad.com/l/dzuxm" data-closed-label="New purchases closed">Checkout link &rarr;</a>
+        <a class="more" href="https://jothan8.gumroad.com/l/dzuxm">Checkout link &rarr;</a>
       </article>
       <article class="post">
-        <span class="tag mono">REQUEST-ONLY GUIDANCE</span>
-        <h2>Separately scoped assistance</h2>
-        <p>Merchants who need hands-on migration guidance may contact Josh to discuss a separately scoped assisted session. The merchant keeps control of the device, credentials, and files. No destination outcome is guaranteed.</p>
-        <a class="more" href="mailto:stockylift@pm.me">Ask about assistance &rarr;</a>
+        <span class="tag mono">CONCIERGE</span>
+        <h2>$149 concierge</h2>
+        <ul>
+          <li>One store, one supervised export session, one destination-readiness check, up to 60 minutes.</li>
+          <li>The merchant operates locally. We never request your API key, Shopify login, admin screenshots, or supplier files.</li>
+          <li>Extra work is quoted separately.</li>
+          <li>No third-party import guarantee.</li>
+        </ul>
+        <a class="more" href="mailto:stockylift@pm.me">Contact link &rarr;</a>
       </article>
     </div>
 
     <h2>Chrome Web Store</h2>
-    <p>Status: publicly available. <a href="https://chromewebstore.google.com/detail/stockylift/cdkchilcfepfmkmijippecmndgjbcklk">View the Chrome Web Store listing &rarr;</a></p>
+    <p>Status: publicly available. <a href="https://chromewebstore.google.com/detail/stockylift-%E2%80%94-stocky-suppl/cdkchilcfepfmkmijippecmndgjbcklk">View the Chrome Web Store listing &rarr;</a></p>
 
     <p><strong>Scope limits:</strong> StockyLift exports suppliers only; purchase orders are exported separately through Stocky's UI. It is an independent tool, not a replacement inventory system.</p>
 
@@ -255,6 +253,5 @@
     <p>StockyLift is an independent, unofficial tool and is not affiliated with or endorsed by Shopify or Stocky.</p>
     <p><a href="../index.html">StockyLift</a> · <a href="index.html">Migration hub</a> · <a href="../blog/index.html">Blog</a> · <a href="../privacy.html">Privacy</a> · <a href="mailto:stockylift@pm.me">stockylift@pm.me</a></p>
   </footer>
-  <script type="module" src="../sales-cutoff.js"></script>
 </body>
 </html>

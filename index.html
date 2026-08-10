@@ -4,19 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Export Suppliers from Stocky Before Aug 31 · StockyLift</title>
-  <meta name="description" content="Stocky is shutting down Aug 31, 2026 and has no supplier export button. StockyLift previews your supplier count free, then exports 18 mapped fields to Generic CSV plus a raw JSON backup locally in Chrome." />
+  <meta name="description" content="Stocky is shutting down Aug 31, 2026 and has no supplier export button. StockyLift is a Chrome extension that exports your full Stocky supplier list to CSV for Prediko, Inventory Planner, Genie, or a generic import. Runs 100% in your browser." />
   <link rel="canonical" href="https://stockylift.com/" />
   <meta property="og:title" content="Export Suppliers from Stocky Before Aug 31 · StockyLift" />
-  <meta property="og:description" content="Preview your Stocky supplier count free, then export 18 mapped fields to Generic CSV plus a raw JSON backup locally in Chrome." />
+  <meta property="og:description" content="Stocky shuts down Aug 31, 2026 and has no supplier export button. StockyLift adds one. Your full list, out to CSV, in two minutes." />
   <meta property="og:type" content="website" />
   <!-- Card source: og-card.html (re-screenshot at 1200x630 if the theme changes). -->
   <meta property="og:image" content="https://stockylift.com/og.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="StockyLift — preview your Stocky supplier count free, then keep a local Generic CSV and raw JSON backup before August 31." />
+  <meta property="og:image:alt" content="StockyLift — Stocky is closing. Your suppliers leave with you. Full supplier list to clean CSV in about two minutes." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Export Suppliers from Stocky Before Aug 31 · StockyLift" />
-  <meta name="twitter:description" content="Preview your Stocky supplier count free, then export 18 mapped fields to Generic CSV plus a raw JSON backup locally in Chrome." />
+  <meta name="twitter:description" content="Stocky shuts down Aug 31, 2026 and has no supplier export button. StockyLift adds one. Your full list, out to CSV, in two minutes." />
   <meta name="twitter:image" content="https://stockylift.com/og.png" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232742e8'/%3E%3Ctext x='32' y='43' font-family='monospace' font-size='34' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
 
@@ -63,7 +63,7 @@
         "name": "Which apps do the presets support?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The Generic CSV contains the 18 mapped fields listed on this page, and the JSON backup preserves the raw Stocky supplier records returned by the API. Prediko and Inventory Planner are beta/starter mapping layouts, so check each destination's current import template before a full import. Genie is byte-verified against Genie's published supplier template, but merchants should still run a small test import and check current Genie app behavior before a full migration. Otherwise use the Generic CSV or JSON backup as the portable fallback."
+          "text": "The Generic CSV (every Stocky field) and the raw JSON backup are reliable and guaranteed. Prediko and Inventory Planner are beta/starter mapping layouts, so check each destination's current import template before a full import. Genie is byte-verified against Genie's published supplier template, but merchants should still run a small test import and check current Genie app behavior before a full migration. Otherwise use the Generic CSV as the portable fallback."
         }
       },
       {
@@ -79,7 +79,7 @@
         "name": "Do you see my supplier data or my API key?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. There are no servers and no StockyLift account. Everything runs inside your browser. StockyLift uses one read-only API path; your browser may make multiple paginated requests to Stocky's supplier endpoint. Credentials and supplier files are not sent to a StockyLift server."
+          "text": "No. There are no servers and no account. Everything runs inside your browser. Your key and supplier data never leave your machine except for the one authenticated request your browser makes to Stocky."
         }
       }
     ]
@@ -177,13 +177,6 @@
     .btn-ghost { background: transparent; color: var(--ink); border-color: var(--hairline); }
     .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
     .btn-ghost:active { transform: translateY(1px); }
-    .btn[aria-disabled="true"] {
-      cursor: not-allowed;
-      opacity: 0.62;
-      background: var(--muted);
-      color: var(--bg);
-      pointer-events: none;
-    }
 
     /* ===== Nav ===== */
     nav {
@@ -627,16 +620,9 @@
       section { padding: 72px 0; }
     }
     @media (max-width: 560px) {
-      .nav-in { padding-left: 12px; padding-right: 12px; }
-      .nav-links { gap: 8px; }
-      .navlink { font-size: 0.75rem; white-space: nowrap; }
-      nav .btn { padding-left: 12px; padding-right: 12px; }
       .bento { grid-template-columns: 1fr; }
       .cell.big { grid-column: auto; }
       .filecard { transform: translateX(8px); }
-    }
-    @media (max-width: 360px) {
-      .navlink { display: none; }
     }
   </style>
 </head>
@@ -656,16 +642,13 @@
       <div>
         <p class="countdown rise" id="countdown" role="timer" aria-live="off"><span class="cd-dot"></span><span>Stocky stops operating Aug 31. Export while its API is available.</span></p>
         <h1 class="rise"><span>Stocky shuts down</span><span>Aug 31.</span></h1>
-        <p class="lede rise">Stocky has no built-in supplier export. Preview your supplier count and first three supplier names for free before you buy, then keep the full export locally as portable CSV and JSON files.</p>
+        <p class="lede rise">Stocky has no built-in supplier export. Preview your supplier count for free before you buy, then keep the full export locally as portable CSV and JSON files.</p>
         <div class="cta-row rise">
-          <a class="btn btn-primary" data-purchase-link="https://jothan8.gumroad.com/l/dzuxm" data-closed-label="New purchases closed">Get StockyLift</a>
-          <a class="btn btn-ghost" href="https://chromewebstore.google.com/detail/stockylift/cdkchilcfepfmkmijippecmndgjbcklk">Install free from Chrome Web Store</a>
+          <a class="btn btn-primary" href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a>
+          <a class="btn btn-ghost" href="https://chromewebstore.google.com/detail/stockylift-%E2%80%94-stocky-suppl/cdkchilcfepfmkmijippecmndgjbcklk">Install free from Chrome Web Store</a>
         </div>
-        <p class="micro rise" data-sales-closed-message hidden><b>New purchases closed after August 17.</b> Existing buyers remain supported. Installation, privacy information, and documentation remain available; email <a href="mailto:stockylift@pm.me">support</a> for help with an existing purchase.</p>
         <p class="micro rise">$19 once. No subscription, no account, nothing uploaded to a StockyLift server.</p>
-        <p class="micro rise"><b>Offer disclosure v2026-08-01.</b> Newly launched; real-store compatibility is still being verified. Text or email guidance is available, with an optional 15-minute call only if you request it.</p>
         <p class="micro rise">Free server-side and destination-specific tools also exist. Choose StockyLift when local-only, destination-independent files matter.</p>
-        <p class="micro rise">Deadline facts: <a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky">Shopify's Stocky transition guide</a>.</p>
         <p class="micro rise">Moving to Prediko, Inventory Planner, Genie, or Sumtracker? <a href="migrate/index.html">See the full migration guide &rarr;</a></p>
       </div>
 
@@ -703,6 +686,26 @@
     </div>
   </header>
 
+  <section class="explain">
+    <div class="wrap">
+      <h2 data-reveal>What it actually does</h2>
+      <p class="sub" data-reveal style="--i:1">Twenty-seven seconds, no narration required.</p>
+      <div class="vidwrap" data-reveal style="--i:2">
+        <video
+          id="explainVid"
+          width="1280" height="720"
+          poster="video-poster.jpg"
+          preload="none"
+          controls playsinline muted loop
+          aria-label="Animated diagram: data moves read-only from the Stocky API through the StockyLift extension in your browser, out to CSV and JSON files you keep.">
+          <source src="stockylift-27s.mp4" type="video/mp4" />
+          <p>Your browser can't play this video. The short version: StockyLift reads Stocky's
+          own API from inside your browser and writes your suppliers to CSV and JSON.</p>
+        </video>
+      </div>
+      <p class="micro vidnote" data-reveal style="--i:3">This is an explanatory diagram, not a screen recording of Stocky.</p>
+    </div>
+  </section>
 
   <section class="situation">
     <div class="wrap">
@@ -726,7 +729,7 @@
       </div>
       <div class="facts">
         <div class="fact" data-reveal style="--i:2"><b class="mono">Aug 31, 2026</b><span>Stocky and its API go dark</span></div>
-        <div class="fact" data-reveal style="--i:3"><b class="mono">18</b><span>supplier fields mapped into Generic CSV</span></div>
+        <div class="fact" data-reveal style="--i:3"><b class="mono">18</b><span>supplier fields StockyLift exports, verified</span></div>
         <div class="fact" data-reveal style="--i:4"><b class="mono">0</b><span>export buttons in the Stocky UI</span></div>
       </div>
     </div>
@@ -734,7 +737,7 @@
 
   <section id="how">
     <div class="wrap">
-      <h2 data-reveal>Preview, unlock, export</h2>
+      <h2 data-reveal>Two minutes, three steps</h2>
       <p class="sub" data-reveal style="--i:1">No account, no sign-up, no server in the middle.</p>
       <div class="hiw-grid">
         <div class="steps vert" data-reveal style="--i:2">
@@ -746,19 +749,19 @@
           <div class="step">
             <span class="step-n mono">2</span>
             <h3>Preview free</h3>
-            <p>See your supplier count and first three supplier names before you pay.</p>
+            <p>See your supplier count before you pay.</p>
           </div>
           <div class="step">
             <span class="step-n mono">3</span>
-            <h3>Download your files</h3>
-            <p>Generic CSV and raw JSON backup, plus optional destination layouts.</p>
+            <h3>Export everything</h3>
+            <p>Every format, one download.</p>
           </div>
         </div>
         <div class="hiw-demo" data-reveal style="--i:3" role="img" aria-label="Animation: supplier rows load, a progress bar fills while exporting 42 suppliers, then a suppliers.csv file with 42 rows is produced.">
           <div class="hd-bar" aria-hidden="true"><i></i><i></i><i></i><span>StockyLift</span></div>
           <div class="hd-body" aria-hidden="true">
             <div class="hd-rows">
-              <div class="hd-row head">name,contact_email,city,country_name</div>
+              <div class="hd-row head">name,email,city,payment_terms</div>
               <div class="hd-row r1">Northwind Textile Co.</div>
               <div class="hd-row r2">Harbor &amp; Pine Ceramics</div>
               <div class="hd-row r3">Golden Valley Organics</div>
@@ -776,28 +779,28 @@
 
   <section class="formats">
     <div class="wrap">
-      <h2 data-reveal>Portable files, optional destination layouts</h2>
-      <p class="sub" data-reveal style="--i:1">Keep a destination-independent backup even if you have not chosen the next app.</p>
+      <h2 data-reveal>Every field, every format</h2>
+      <p class="sub" data-reveal style="--i:1">Files built for wherever you land next, or just for keeping.</p>
       <div class="bento">
         <div class="cell big" data-reveal style="--i:2">
-          <span class="chip sure mono">18 MAPPED FIELDS</span>
+          <span class="chip sure mono">GUARANTEED</span>
           <h3>Generic CSV</h3>
-          <p>18 mapped fields · RFC-4180 + BOM, opens cleanly in Excel.</p>
+          <p>All 18 fields · RFC-4180 + BOM, opens clean in Excel.</p>
           <p><a href="sample-suppliers.csv" download>Download anonymized CSV sample</a></p>
           <div class="csv-strip" aria-hidden="true">
-            <div class="h">name,contact_email,phone,city,country_name</div>
+            <div class="h">name,email,phone,address_city,payment_terms</div>
             <div>Northwind Textile Co.,orders@northwind.example,…</div>
             <div>Harbor &amp; Pine Ceramics,hello@harborpine.example,…</div>
             <div>Golden Valley Organics,sales@goldenvalley.example,…</div>
           </div>
         </div>
         <div class="cell" data-reveal style="--i:3">
-          <span class="chip sure mono">RAW BACKUP</span>
+          <span class="chip sure mono">GUARANTEED</span>
           <h3>JSON backup</h3>
           <p>The raw records, exactly as Stocky returned them.</p>
           <p><a href="sample-suppliers.json" download>Download anonymized JSON sample</a></p>
-          <div class="json-snip" aria-hidden="true">[{ "id": 101,
-  "name": "Northwind Textile Co." }]</div>
+          <div class="json-snip" aria-hidden="true">{ "suppliers": 42,
+  "fields": 18 }</div>
         </div>
         <div class="cell" data-reveal style="--i:4">
           <span class="chip mono">BETA</span>
@@ -828,7 +831,7 @@
         <p class="sub" data-reveal style="--i:1">StockyLift is a Chrome extension, not a service. There is no server to trust because there is no server.</p>
       </div>
       <div class="checks">
-        <div class="check" data-reveal style="--i:2"><span class="tick mono">✓</span><div><b>One read-only API path</b><span>Your browser pages through Stocky's supplier endpoint using your own authenticated requests.</span></div></div>
+        <div class="check" data-reveal style="--i:2"><span class="tick mono">✓</span><div><b>One network call</b><span>Your own authenticated request, straight from your browser to Stocky.</span></div></div>
         <div class="check" data-reveal style="--i:3"><span class="tick mono">✓</span><div><b>Your key stays put</b><span>The API key is used locally and never sent anywhere else.</span></div></div>
         <div class="check" data-reveal style="--i:4"><span class="tick mono">✓</span><div><b>No account, no analytics</b><span>Nobody sees your supplier list. There is nothing to log in to.</span></div></div>
         <div class="check" data-reveal style="--i:5"><span class="tick mono">✓</span><div><b>Files are yours forever</b><span>CSVs and JSON on your disk, useful long after the API dies.</span></div></div>
@@ -842,23 +845,18 @@
         <div class="price mono">$19</div>
         <p class="price-line">One store, one-time. Not a subscription.</p>
         <ul class="price-list">
-          <li>Paginated supplier export with no StockyLift row cap</li>
-          <li>Generic CSV with 18 mapped fields plus a raw JSON backup</li>
+          <li>Every supplier, no row limit</li>
+          <li>Generic CSV and JSON backup, guaranteed</li>
           <li>Prediko and Inventory Planner are beta/starter mapping layouts (check destination template rows). Genie is byte-verified against Genie's published supplier template; run a quick test import/check in your live Genie account.</li>
-          <li>Free supplier count and first three names before you pay</li>
+          <li>Free preview before you pay</li>
           <li>Updates through the shutdown</li>
         </ul>
-        <a class="btn btn-primary" data-purchase-link="https://jothan8.gumroad.com/l/dzuxm" data-closed-label="New purchases closed">Get StockyLift</a>
+        <a class="btn btn-primary" href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a>
         <p class="micro">Unlock code is emailed manually within a few hours.</p>
-        <p class="micro"><b>Offer disclosure v2026-08-01.</b> Newly launched; real-store compatibility is still being verified. Text or email guidance comes first; an optional 15-minute call is available only if you request it.</p>
-        <p class="micro"><b>Eligibility:</b> You need current access to your own Stocky store, your <code>myshopify.com</code> store name, and your own Stocky API key. Operate StockyLift on your device and keep control of your keyboard, screen, credentials, and files.</p>
-        <p class="micro"><b>Generic CSV fields:</b> <code>id</code>, <code>name</code>, <code>company_name</code>, <code>account_number</code>, <code>contact_name</code>, <code>contact_email</code>, <code>address1</code>, <code>address2</code>, <code>city</code>, <code>province_code</code>, <code>country_name</code>, <code>zip</code>, <code>phone</code>, <code>phone_toll_free</code>, <code>fax</code>, <code>is_hidden</code>, <code>created_at</code>, and <code>updated_at</code>. Missing fields stay blank; unverified extra fields are omitted from Generic CSV but remain in the raw JSON backup.</p>
-        <p class="micro">Stocky supplier records are different from Shopify's product <code>vendor</code> field. Compare StockyLift with Shopify's built-in reports and available free/server-side migration tools; pay only if the local Generic CSV and JSON backup fit your task.</p>
-        <p class="micro"><a href="https://chromewebstore.google.com/detail/stockylift/cdkchilcfepfmkmijippecmndgjbcklk">Install or preview free in the Chrome Web Store &rarr;</a></p>
-        <p class="micro" data-sales-closed-message hidden><b>New purchases closed after August 17.</b> Existing buyers remain supported and may still use the installation, privacy, documentation, support, and refund information on this site.</p>
+        <p class="micro"><a href="https://chromewebstore.google.com/detail/stockylift-%E2%80%94-stocky-suppl/cdkchilcfepfmkmijippecmndgjbcklk">Install or preview free in the Chrome Web Store &rarr;</a></p>
         <p class="micro">Bought it? Reply to your receipt or email <a href="mailto:stockylift@pm.me">support</a> with where you found StockyLift (Shopify Community, Reddit, Google, CWS, partner, or other).</p>
-        <p class="micro"><b>Eligible Generic CSV/JSON failures receive a full refund.</b> If a buyer with current Stocky access can complete the free preview but StockyLift cannot produce usable Generic CSV and raw JSON for the stated supplier task, reply to the receipt for an immediate full refund. No API key, supplier file, admin access, or merchant-data screenshot is required.</p>
-        <p class="micro">Merchants who need hands-on migration guidance may <a href="mailto:stockylift@pm.me">contact Josh</a> to discuss a separately scoped assisted session. No destination outcome is guaranteed.</p>
+        <p class="micro">If it can't export your suppliers cleanly, full refund. Reply to your receipt.</p>
+        <p class="micro"><b>Concierge: $149.</b> One store, one supervised export session and destination-readiness check, up to 60 minutes. You operate locally; we never ask for your API key, Shopify login, admin screenshots, or supplier files. Extra work is quoted separately.</p>
       </div>
       <div>
         <h2 data-reveal>Questions merchants actually ask</h2>
@@ -883,7 +881,7 @@
           </details>
           <details class="qa" data-reveal>
             <summary>Which apps do the presets support?</summary>
-            <div class="ans"><p>The <strong>Generic CSV</strong> contains the 18 mapped fields listed beside the purchase button, while the raw <strong>JSON backup</strong> preserves the Stocky supplier records returned by the API. <strong>Prediko</strong> and <strong>Inventory Planner</strong> are beta/starter mapping layouts, so check each destination's current import template before a large import. <strong>Genie</strong> is byte-verified against Genie's published supplier template, but run a small test import/check in current Genie behavior before a full migration. Use Generic CSV or JSON as the portable fallback if you need a different tool.</p></div>
+            <div class="ans"><p>The <strong>Generic CSV</strong> (every Stocky field) and the raw <strong>JSON backup</strong> are <strong>reliable and guaranteed</strong>. <strong>Prediko</strong> and <strong>Inventory Planner</strong> are beta/starter mapping layouts, so check each destination's current import template before a large import. <strong>Genie</strong> is byte-verified against Genie's published supplier template, but run a small test import/check in current Genie behavior before a full migration. Use Generic CSV as the portable fallback if you need to import into a different tool.</p></div>
           </details>
           <details class="qa" data-reveal>
             <summary>Where do I find my Stocky API key?</summary>
@@ -891,7 +889,7 @@
           </details>
           <details class="qa" data-reveal>
             <summary>Do you see my supplier data or my API key?</summary>
-            <div class="ans"><p>No. There are no servers and no StockyLift account. Everything runs inside your browser. StockyLift uses one read-only API path; your browser may make multiple paginated requests to Stocky's supplier endpoint. Credentials and supplier files are not sent to a StockyLift server.</p></div>
+            <div class="ans"><p>No. There are no servers and no account. Everything runs inside your browser. Your key and data never leave your machine except for the one authenticated request your browser makes to Stocky.</p></div>
           </details>
         </div>
       </div>
@@ -900,10 +898,9 @@
 
   <footer>
     <p>StockyLift is an independent tool and is not affiliated with or endorsed by Shopify or Stocky.</p>
-    <p><a data-purchase-link="https://jothan8.gumroad.com/l/dzuxm" data-closed-label="New purchases closed">Get StockyLift</a> · <a href="blog/index.html">Blog</a> · <a href="privacy.html">Privacy</a> · <a href="mailto:stockylift@pm.me">Existing-buyer support</a></p>
+    <p><a href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a> · <a href="blog/index.html">Blog</a> · <a href="privacy.html">Privacy</a></p>
   </footer>
 
-  <script type="module" src="sales-cutoff.js"></script>
   <script>
     (function () {
       "use strict";

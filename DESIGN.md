@@ -65,12 +65,12 @@ tinted shadow). Mobile: stack, demo below CTAs, countdown stays.
    backup; Prediko; Inventory Planner; Genie. Beta presets labeled honestly).
 6. Runs in your browser (2-col: statement + 4 check rows: no servers, no account, key never
    leaves your machine, works until the API dies). Cobalt check glyphs = the section's one emphasis.
-7. Pricing (single card, mono "$19", one line "One store, forever, 14-day refund") + FAQ
+7. Pricing (single card, mono "$39", one line "One store, forever, 14-day refund") + FAQ
    (accordion, keeps existing FAQPage JSON-LD + copy, keeps slugs/anchors for SEO) + footer.
 
 ## Copy rules
 Verb-first plain English, no em-dashes anywhere, no "Seamless/Unleash", no fake numbers: field
-count (18), price ($19), and dates are real. One register: calm expert under deadline.
+count (18), price ($39), and dates are real. One register: calm expert under deadline.
 
 ## Ship-readiness
 Static, no bundler, no deps (repo convention). Keep files index.html / thanks.html /
