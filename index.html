@@ -177,6 +177,7 @@
     .btn-ghost { background: transparent; color: var(--ink); border-color: var(--hairline); }
     .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
     .btn-ghost:active { transform: translateY(1px); }
+    .btn[aria-disabled="true"] { cursor: not-allowed; opacity: 0.62; background: var(--muted); color: var(--bg); pointer-events: none; }
 
     /* ===== Nav ===== */
     nav {
@@ -644,9 +645,10 @@
         <h1 class="rise"><span>Stocky shuts down</span><span>Aug 31.</span></h1>
         <p class="lede rise">Stocky has no built-in supplier export. Preview your supplier count for free before you buy, then keep the full export locally as portable CSV and JSON files.</p>
         <div class="cta-row rise">
-          <a class="btn btn-primary" href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a>
+          <a class="btn btn-primary" data-purchase-link="https://jothan8.gumroad.com/l/dzuxm" data-closed-label="New purchases closed">Get StockyLift</a>
           <a class="btn btn-ghost" href="https://chromewebstore.google.com/detail/stockylift-%E2%80%94-stocky-suppl/cdkchilcfepfmkmijippecmndgjbcklk">Install free from Chrome Web Store</a>
         </div>
+        <p class="micro rise" data-sales-closed-message hidden><b>New purchases closed after August 17.</b> Existing buyers remain supported. Installation, privacy information, documentation, and support remain available.</p>
         <p class="micro rise">$19 once. No subscription, no account, nothing uploaded to a StockyLift server.</p>
         <p class="micro rise">Free server-side and destination-specific tools also exist. Choose StockyLift when local-only, destination-independent files matter.</p>
         <p class="micro rise">Moving to Prediko, Inventory Planner, Genie, or Sumtracker? <a href="migrate/index.html">See the full migration guide &rarr;</a></p>
@@ -851,8 +853,12 @@
           <li>Free preview before you pay</li>
           <li>Updates through the shutdown</li>
         </ul>
-        <a class="btn btn-primary" href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a>
+        <a class="btn btn-primary" data-purchase-link="https://jothan8.gumroad.com/l/dzuxm" data-closed-label="New purchases closed">Get StockyLift</a>
         <p class="micro">Unlock code is emailed manually within a few hours.</p>
+        <p class="micro" data-sales-closed-message hidden><b>New purchases closed after August 17.</b> Existing buyers remain supported and may still use installation, documentation, support, and refund information.</p>
+        <p class="micro"><b>Offer disclosure v2026-08-01.</b> Newly launched; real-store compatibility is still being verified. Text or email guidance comes first; an optional 15-minute call is available only if you request it.</p>
+        <p class="micro"><b>Eligibility:</b> You need current access to your own Stocky store, your <code>myshopify.com</code> store name, and your own Stocky API key. Operate StockyLift on your device and keep control of your keyboard, screen, credentials, and files.</p>
+        <p class="micro"><b>Generic CSV fields:</b> <code>id</code>, <code>name</code>, <code>company_name</code>, <code>account_number</code>, <code>contact_name</code>, <code>contact_email</code>, <code>address1</code>, <code>address2</code>, <code>city</code>, <code>province_code</code>, <code>country_name</code>, <code>zip</code>, <code>phone</code>, <code>phone_toll_free</code>, <code>fax</code>, <code>is_hidden</code>, <code>created_at</code>, and <code>updated_at</code>. Missing fields stay blank; unverified extra fields are omitted from Generic CSV but remain in the raw JSON backup.</p>
         <p class="micro"><a href="https://chromewebstore.google.com/detail/stockylift-%E2%80%94-stocky-suppl/cdkchilcfepfmkmijippecmndgjbcklk">Install or preview free in the Chrome Web Store &rarr;</a></p>
         <p class="micro">Bought it? Reply to your receipt or email <a href="mailto:stockylift@pm.me">support</a> with where you found StockyLift (Shopify Community, Reddit, Google, CWS, partner, or other).</p>
         <p class="micro">If it can't export your suppliers cleanly, full refund. Reply to your receipt.</p>
@@ -898,7 +904,7 @@
 
   <footer>
     <p>StockyLift is an independent tool and is not affiliated with or endorsed by Shopify or Stocky.</p>
-    <p><a href="https://jothan8.gumroad.com/l/dzuxm">Get StockyLift</a> · <a href="blog/index.html">Blog</a> · <a href="privacy.html">Privacy</a></p>
+    <p><a data-purchase-link="https://jothan8.gumroad.com/l/dzuxm" data-closed-label="New purchases closed">Get StockyLift</a> · <a href="blog/index.html">Blog</a> · <a href="privacy.html">Privacy</a></p>
   </footer>
 
   <script>
@@ -1023,5 +1029,6 @@
       vio.observe(demoEl);
     })();
   </script>
+  <script type="module" src="sales-cutoff.js"></script>
 </body>
 </html>
